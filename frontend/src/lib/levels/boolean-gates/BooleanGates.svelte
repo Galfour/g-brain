@@ -22,6 +22,13 @@
 	const activeCount = $derived(allLevers.filter(Boolean).length);
 	const canToggleOn = $derived(activeCount < config.maxActiveLevers);
 
+	// Get color for a lever (returns color if active, or null if dummy)
+	const getLeverColor = (leverIndex: number) => {
+		const activeIndex = config.activeLeverIndices.indexOf(leverIndex);
+		if (activeIndex === -1) return null;
+		return config.inputColors[activeIndex] || null;
+	};
+
 	function toggle(i: number) {
 		const newValue = !allLevers[i];
 		// Only allow turning ON if under maxActiveLevers limit
@@ -44,13 +51,21 @@
 				<div class="subtitle">Levers</div>
 				<Row gap="var(--space-3)">
 					{#each allLevers as on, i}
-						<Button 
-							variant={on ? 'primary' : 'surface'} 
-							onclick={() => toggle(i)}
-							disabled={!on && !canToggleOn}
-						>
-							{on ? `Lever ${i+1}: ON` : `Lever ${i+1}: OFF`}
-						</Button>
+						{@const leverColor = getLeverColor(i)}
+						{@const wrapperStyle = leverColor 
+							? `border: 2px solid ${leverColor}; border-radius: var(--radius-sm); overflow: hidden; ${on ? `background: ${leverColor};` : ''}` 
+							: ''}
+						<div style={wrapperStyle}>
+							<Button 
+								variant={on && leverColor ? 'surface' : (on ? 'primary' : 'surface')} 
+								onclick={() => toggle(i)}
+								disabled={!on && !canToggleOn}
+							>
+								<span style={on && leverColor ? 'color: #0b0f14; font-weight: 600;' : ''}>
+									{on ? `Lever ${i+1}: ON` : `Lever ${i+1}: OFF`}
+								</span>
+							</Button>
+						</div>
 					{/each}
 				</Row>
 				<div class="subtitle" style="font-size: 12px; color: var(--color-muted);">
@@ -65,7 +80,11 @@
 				<div class="subtitle">Outputs</div>
 				<Row gap="var(--space-3)">
 					{#each outputs as open, i}
-						<div class="card" style={`padding: var(--space-4); border-color:${open ? 'var(--color-primary)' : 'var(--color-border)'};`}>
+						{@const outputColor = config.outputColors[i]}
+						<div 
+							class="card" 
+							style={`padding: var(--space-4); border: 2px solid ${outputColor || 'var(--color-border)'}; ${open && outputColor ? `background: color-mix(in oklab, ${outputColor}, transparent 85%);` : ''}`}
+						>
 							Output {i+1}: {open ? 'TRUE' : 'FALSE'}
 						</div>
 					{/each}
