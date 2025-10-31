@@ -5,16 +5,24 @@
 	import Card from '$lib/component/Card.svelte';
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
-	import type { ColorSortingConfig } from './types';
-	import { sortColorsByProperty, isSorted } from './types';
+	import type { ColorSortingConfig, RGB } from './types';
+	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
 
 	let { config, children }: { config: ColorSortingConfig; children?: any } = $props();
 
-	// Generate different colors for example and input
-	const exampleColors = $state(config.generateColors());
+	// Determine if this is an easy level (numColors <= 10)
+	const isEasyLevel = config.numColors <= 10;
+	const numExamples = isEasyLevel ? 3 : 1;
+	
+	// Generate different colors for examples and input
+	const exampleColorSets = $state(
+		Array.from({ length: numExamples }, () => config.generateColors())
+	);
 	const inputColors = $state(config.generateColors());
 	
-	const correctOrder = $derived(sortColorsByProperty([...exampleColors], config.property));
+	const exampleOrders = $derived(
+		exampleColorSets.map(colors => sortColorsByProperty([...colors], config.property))
+	);
 	const correctInputOrder = $derived(sortColorsByProperty([...inputColors], config.property));
 	
 	// User's current order (starts shuffled)
@@ -41,14 +49,18 @@
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Example (Correct Order)</div>
-				<Row gap="var(--space-2)" style="flex-wrap: wrap;">
-					{#each correctOrder as color}
-						<div
-							style="width: 48px; height: 48px; background: {color}; border-radius: var(--radius-sm); border: 1px solid var(--color-border);"
-						></div>
+				<div class="subtitle">Example{numExamples > 1 ? 's' : ''} (Correct Order)</div>
+				<Column gap="var(--space-3)">
+					{#each exampleOrders as exampleOrder}
+						<Row gap="var(--space-2)" style="flex-wrap: wrap;">
+							{#each exampleOrder as color}
+								<div
+									style="width: 48px; height: 48px; background: {rgbToCss(color)}; border-radius: var(--radius-sm); border: 1px solid var(--color-border);"
+								></div>
+							{/each}
+						</Row>
 					{/each}
-				</Row>
+				</Column>
 			</Column>
 		</Card>
 
@@ -56,11 +68,14 @@
 			<Column gap="var(--space-4)">
 				<div class="subtitle">Your Order {#if isCorrect}<span style="color: var(--color-primary);">✓ Correct!</span>{/if}</div>
 				<div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);">
-					{#each userOrder as color, colorIndex (color)}
-						<div
-							animate:flip={{ duration: 300 }}
-							style="width: 48px; height: 48px; background: {color}; border-radius: var(--radius-sm); border: 1px solid var(--color-border); order: {colorIndex * 2};"
-						></div>
+					{#each userOrder as color, colorIndex}
+						{@const colorKey = `${color.r},${color.g},${color.b}`}
+						{#each [color] as c (colorKey)}
+							<div
+								animate:flip={{ duration: 300 }}
+								style="width: 48px; height: 48px; background: {rgbToCss(c)}; border-radius: var(--radius-sm); border: 1px solid var(--color-border); order: {colorIndex * 2};"
+							></div>
+						{/each}
 					{/each}
 					{#each Array(userOrder.length - 1) as _, i}
 						<button

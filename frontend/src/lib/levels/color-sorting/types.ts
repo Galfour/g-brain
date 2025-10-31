@@ -1,30 +1,36 @@
 export type ColorProperty = 'redness' | 'greenness' | 'blueness' | 'hue' | 'saturation' | 'brightness';
 
+export type RGB = { r: number; g: number; b: number };
+
 export type ColorSortingConfig = {
 	numColors: number; // 5, 10, 20, 50
 	property: ColorProperty;
-	generateColors: () => string[]; // Function that generates unique colors
+	generateColors: () => RGB[]; // Function that generates unique colors
 	title: string;
 	subtitle: string;
 };
 
-// Helper functions to extract color properties from hex color
-export function getRedness(color: string): number {
-	const hex = color.replace('#', '');
-	const r = parseInt(hex.substring(0, 2), 16);
-	return r;
+// Helper to convert RGB to hex string for CSS
+export function rgbToHex(rgb: RGB): string {
+	return `#${rgb.r.toString(16).padStart(2, '0')}${rgb.g.toString(16).padStart(2, '0')}${rgb.b.toString(16).padStart(2, '0')}`;
 }
 
-export function getGreenness(color: string): number {
-	const hex = color.replace('#', '');
-	const g = parseInt(hex.substring(2, 4), 16);
-	return g;
+// Helper to convert RGB to CSS color string
+export function rgbToCss(rgb: RGB): string {
+	return `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
 }
 
-export function getBlueness(color: string): number {
-	const hex = color.replace('#', '');
-	const b = parseInt(hex.substring(4, 6), 16);
-	return b;
+// Helper functions to extract color properties from RGB
+export function getRedness(color: RGB): number {
+	return color.r;
+}
+
+export function getGreenness(color: RGB): number {
+	return color.g;
+}
+
+export function getBlueness(color: RGB): number {
+	return color.b;
 }
 
 // Convert RGB to HSV for hue, saturation, brightness
@@ -56,29 +62,20 @@ export function rgbToHsv(r: number, g: number, b: number): { h: number; s: numbe
 	return { h, s, v };
 }
 
-export function getHue(color: string): number {
-	const r = getRedness(color);
-	const g = getGreenness(color);
-	const b = getBlueness(color);
-	return rgbToHsv(r, g, b).h;
+export function getHue(color: RGB): number {
+	return rgbToHsv(color.r, color.g, color.b).h;
 }
 
-export function getSaturation(color: string): number {
-	const r = getRedness(color);
-	const g = getGreenness(color);
-	const b = getBlueness(color);
-	return Math.round(rgbToHsv(r, g, b).s * 100);
+export function getSaturation(color: RGB): number {
+	return Math.round(rgbToHsv(color.r, color.g, color.b).s * 100);
 }
 
-export function getBrightness(color: string): number {
-	const r = getRedness(color);
-	const g = getGreenness(color);
-	const b = getBlueness(color);
-	return Math.round(rgbToHsv(r, g, b).v * 100);
+export function getBrightness(color: RGB): number {
+	return Math.round(rgbToHsv(color.r, color.g, color.b).v * 100);
 }
 
 // Get property value for a color
-export function getPropertyValue(color: string, property: ColorProperty): number {
+export function getPropertyValue(color: RGB, property: ColorProperty): number {
 	switch (property) {
 		case 'redness':
 			return getRedness(color);
@@ -96,7 +93,7 @@ export function getPropertyValue(color: string, property: ColorProperty): number
 }
 
 // Sort colors by property value
-export function sortColorsByProperty(colors: string[], property: ColorProperty): string[] {
+export function sortColorsByProperty(colors: RGB[], property: ColorProperty): RGB[] {
 	return [...colors].sort((a, b) => {
 		const valA = getPropertyValue(a, property);
 		const valB = getPropertyValue(b, property);
@@ -105,20 +102,23 @@ export function sortColorsByProperty(colors: string[], property: ColorProperty):
 }
 
 // Check if colors are sorted correctly (for hue, check if circular order is correct)
-export function isSorted(colors: string[], property: ColorProperty, correctOrder: string[]): boolean {
+export function isSorted(colors: RGB[], property: ColorProperty, correctOrder: RGB[]): boolean {
+	// Helper to compare two RGB colors
+	const colorsEqual = (a: RGB, b: RGB) => a.r === b.r && a.g === b.g && a.b === b.b;
+
 	if (property === 'hue') {
 		// For hue, check if it's a circular permutation
 		// Try all rotations of correctOrder
 		for (let offset = 0; offset < correctOrder.length; offset++) {
 			const rotated = [...correctOrder.slice(offset), ...correctOrder.slice(0, offset)];
-			if (rotated.every((color, i) => color === colors[i])) {
+			if (rotated.every((color, i) => colorsEqual(color, colors[i]))) {
 				return true;
 			}
 		}
 		return false;
 	} else {
 		// For other properties, exact match required
-		return colors.every((color, i) => color === correctOrder[i]);
+		return colors.every((color, i) => colorsEqual(color, correctOrder[i]));
 	}
 }
 

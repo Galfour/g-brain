@@ -1,83 +1,83 @@
-import type { ColorSortingConfig } from './types';
+import type { ColorSortingConfig, RGB } from './types';
 
 // Helper to generate colors that vary only in one property (for easy levels)
-function generateColorsByRedness(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsByRedness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = Math.floor(255 / (numColors - 1));
+	const g = Math.floor(Math.random() * 256); // Random green
+	const b = Math.floor(Math.random() * 256); // Random blue
 	for (let i = 0; i < numColors; i++) {
 		const r = Math.min(i * step, 255);
-		const g = 100; // Fixed
-		const b = 100; // Fixed
-		colors.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+		colors.push({ r, g, b });
 	}
 	return colors.sort(() => Math.random() - 0.5); // Shuffle
 }
 
-function generateColorsByGreenness(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsByGreenness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = Math.floor(255 / (numColors - 1));
+	const r = Math.floor(Math.random() * 256); // Random red
+	const b = Math.floor(Math.random() * 256); // Random blue
 	for (let i = 0; i < numColors; i++) {
-		const r = 100; // Fixed
 		const g = Math.min(i * step, 255);
-		const b = 100; // Fixed
-		colors.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+		colors.push({ r, g, b });
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-function generateColorsByBlueness(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsByBlueness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = Math.floor(255 / (numColors - 1));
+	const r = Math.floor(Math.random() * 256); // Random red
+	const g = Math.floor(Math.random() * 256); // Random green
 	for (let i = 0; i < numColors; i++) {
-		const r = 100; // Fixed
-		const g = 100; // Fixed
 		const b = Math.min(i * step, 255);
-		colors.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+		colors.push({ r, g, b });
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-function generateColorsByHue(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsByHue(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = 360 / numColors;
+	const s = 50 + Math.floor(Math.random() * 40); // Random saturation between 50-90
+	const v = 50 + Math.floor(Math.random() * 40); // Random brightness between 50-90
 	for (let i = 0; i < numColors; i++) {
 		const h = (i * step) % 360;
-		const s = 80; // Fixed saturation
-		const v = 80; // Fixed brightness
-		const color = hsvToHex(h, s, v);
+		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-function generateColorsBySaturation(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsBySaturation(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = 100 / (numColors - 1);
+	const h = Math.floor(Math.random() * 360); // Random hue
+	const v = 50 + Math.floor(Math.random() * 40); // Random brightness between 50-90
 	for (let i = 0; i < numColors; i++) {
-		const h = 200; // Fixed hue (blue-green)
 		const s = Math.min(i * step, 100);
-		const v = 80; // Fixed brightness
-		const color = hsvToHex(h, s, v);
+		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-function generateColorsByBrightness(numColors: number): string[] {
-	const colors: string[] = [];
+function generateColorsByBrightness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = 100 / (numColors - 1);
+	const h = Math.floor(Math.random() * 360); // Random hue
+	const s = 50 + Math.floor(Math.random() * 40); // Random saturation between 50-90
 	for (let i = 0; i < numColors; i++) {
-		const h = 200; // Fixed hue (blue-green)
-		const s = 80; // Fixed saturation
 		const v = Math.min(i * step, 100);
-		const color = hsvToHex(h, s, v);
+		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-// Helper to convert HSV to hex
-function hsvToHex(h: number, s: number, v: number): string {
+// Helper to convert HSV to RGB
+function hsvToRgb(h: number, s: number, v: number): RGB {
 	s /= 100;
 	v /= 100;
 	const c = v * s;
@@ -104,40 +104,75 @@ function hsvToHex(h: number, s: number, v: number): string {
 	g = Math.round((g + m) * 255);
 	b = Math.round((b + m) * 255);
 
-	return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+	return { r, g, b };
 }
 
 // Medium/hard levels - colors vary in multiple properties but sorted by one
-function generateRandomColors(numColors: number): string[] {
-	const colors: Set<string> = new Set();
-	while (colors.size < numColors) {
+function generateRandomColors(numColors: number): RGB[] {
+	const colors: RGB[] = [];
+	const seen = new Set<string>();
+	while (colors.length < numColors) {
 		const r = Math.floor(Math.random() * 256);
 		const g = Math.floor(Math.random() * 256);
 		const b = Math.floor(Math.random() * 256);
-		colors.add(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+		const key = `${r},${g},${b}`;
+		if (!seen.has(key)) {
+			seen.add(key);
+			colors.push({ r, g, b });
+		}
 	}
-	return Array.from(colors);
+	return colors;
 }
 
-function generateMixedColorsByRedness(numColors: number): string[] {
-	const colors: string[] = [];
+function generateMixedColorsByRedness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	for (let i = 0; i < numColors; i++) {
 		const r = Math.floor((i / (numColors - 1)) * 255);
 		const g = Math.floor(100 + Math.random() * 50); // Some variation
 		const b = Math.floor(100 + Math.random() * 50); // Some variation
-		colors.push(`#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`);
+		colors.push({ r, g, b });
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-function generateMixedColorsByHue(numColors: number): string[] {
-	const colors: string[] = [];
+// Hard HSB levels - vary 2 axes (1 fixed)
+function generateMixedColorsByHue(numColors: number): RGB[] {
+	const colors: RGB[] = [];
 	const step = 360 / numColors;
+	// Keep saturation fixed, vary hue and brightness
+	const s = 50 + Math.floor(Math.random() * 40); // Fixed saturation between 50-90
 	for (let i = 0; i < numColors; i++) {
 		const h = (i * step) % 360;
-		const s = 60 + Math.random() * 30; // Some variation
-		const v = 60 + Math.random() * 30; // Some variation
-		const color = hsvToHex(h, s, v);
+		const v = 50 + Math.random() * 40; // Vary brightness between 50-90
+		const color = hsvToRgb(h, s, v);
+		colors.push(color);
+	}
+	return colors.sort(() => Math.random() - 0.5);
+}
+
+function generateMixedColorsBySaturation(numColors: number): RGB[] {
+	const colors: RGB[] = [];
+	const step = 100 / (numColors - 1);
+	// Keep hue fixed, vary saturation and brightness
+	const h = Math.floor(Math.random() * 360); // Fixed hue
+	for (let i = 0; i < numColors; i++) {
+		const s = Math.min(i * step, 100);
+		const v = 50 + Math.random() * 40; // Vary brightness between 50-90
+		const color = hsvToRgb(h, s, v);
+		colors.push(color);
+	}
+	return colors.sort(() => Math.random() - 0.5);
+}
+
+function generateMixedColorsByBrightness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
+	const step = 100 / (numColors - 1);
+	// Keep hue fixed, vary saturation and brightness
+	const h = Math.floor(Math.random() * 360); // Fixed hue
+	for (let i = 0; i < numColors; i++) {
+		const v = Math.min(i * step, 100);
+		const s = 50 + Math.random() * 40; // Vary saturation between 50-90
+		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
 	return colors.sort(() => Math.random() - 0.5);
@@ -234,21 +269,21 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			property: 'hue',
 			generateColors: () => generateMixedColorsByHue(20),
 			title: 'Color Sorting 13: Challenge Hue',
-			subtitle: 'Sort 20 colors by hue (colors vary in saturation and brightness)'
+			subtitle: 'Sort 20 colors by hue (colors vary in brightness, saturation fixed)'
 		},
 		'color-sorting-14': {
 			numColors: 50,
 			property: 'brightness',
-			generateColors: () => generateRandomColors(50),
+			generateColors: () => generateMixedColorsByBrightness(50),
 			title: 'Color Sorting 14: Ultimate Challenge',
-			subtitle: 'Sort 50 random colors by brightness'
+			subtitle: 'Sort 50 colors by brightness (colors vary in saturation, hue fixed)'
 		},
 		'color-sorting-15': {
 			numColors: 50,
 			property: 'hue',
-			generateColors: () => generateRandomColors(50),
+			generateColors: () => generateMixedColorsByHue(50),
 			title: 'Color Sorting 15: Ultimate Hue Challenge',
-			subtitle: 'Sort 50 random colors by hue (circular order)'
+			subtitle: 'Sort 50 colors by hue (colors vary in brightness, saturation fixed)'
 		}
 	};
 
