@@ -1,0 +1,165 @@
+/*
+  Theme and Design Principles
+  - Use CSS custom properties for theme tokens: colors, spacing, radii, shadows, typography
+  - Font: system-ui stack set on html
+  - No HTML default styling: normalize/reset base elements; build UI via Components
+  - Styling order: Components → app.css semantic classes → inline styles → last resort component-local classes
+*/
+
+/* Root theme tokens */
+:root {
+	--color-bg: #0b0f14;
+	--color-surface: #121922;
+	--color-elevated: #1b2735;
+	--color-border: #233044;
+	--color-text: #e6eef8;
+	--color-muted: #a8b3c2;
+	--color-primary: #6aa9ff;
+	--color-primary-contrast: #0b0f14;
+
+	--space-0: 0;
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 20px;
+	--space-6: 24px;
+	--space-8: 32px;
+	--space-10: 40px;
+
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
+
+	--shadow-sm: 0 1px 2px rgba(0,0,0,0.2);
+	--shadow-md: 0 6px 16px rgba(0,0,0,0.3);
+}
+
+/* Base reset and defaults (no HTML default styling) */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+html { color-scheme: dark; }
+body {
+	margin: 0;
+	font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, Apple Color Emoji, Segoe UI Emoji;
+	line-height: 1.5;
+	background: var(--color-bg);
+	color: var(--color-text);
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Remove default element styling — components will style these */
+h1, h2, h3, h4, h5, h6, p, figure { margin: 0; font-weight: inherit; }
+ul, ol { margin: 0; padding: 0; list-style: none; }
+a { color: inherit; text-decoration: none; }
+button, input, select, textarea {
+	margin: 0;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	color: inherit;
+	font: inherit;
+	appearance: none;
+}
+button { cursor: pointer; }
+
+/* Layout helpers (semantic, re-used) */
+.container {
+	max-width: 1200px;
+	margin-inline: auto;
+	padding-inline: var(--space-4);
+}
+
+.nav {
+	position: sticky;
+	top: 0;
+	background: color-mix(in oklab, var(--color-bg), #ffffff 2%);
+	backdrop-filter: saturate(120%) blur(6px);
+	border-bottom: 1px solid var(--color-border);
+	z-index: 10;
+}
+.nav__inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 56px;
+}
+.brand { font-weight: 700; letter-spacing: 0.2px; }
+.nav__links { display: flex; gap: var(--space-4); }
+.nav a { color: var(--color-text); opacity: 0.9; }
+.nav a:hover { opacity: 1; }
+
+main.main {
+	padding-block: var(--space-6);
+}
+
+/* Cards */
+.card {
+	background: var(--color-surface);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-sm);
+	padding: var(--space-5);
+}
+
+/* Buttons */
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+	border-radius: var(--radius-sm);
+	padding: 10px 14px;
+	font-weight: 600;
+	line-height: 1;
+	transition: transform 80ms ease, background 120ms ease, color 120ms ease, opacity 120ms ease;
+}
+.btn:active { transform: translateY(1px); }
+.btn[disabled] { opacity: 0.5; pointer-events: none; }
+.btn--primary { background: var(--color-primary); color: var(--color-primary-contrast); }
+.btn--surface { background: var(--color-elevated); color: var(--color-text); border: 1px solid var(--color-border); }
+.btn--ghost { background: transparent; color: var(--color-text); border: 1px dashed var(--color-border); }
+
+/* Typography */
+.title { font-size: clamp(24px, 2.4vw, 32px); font-weight: 800; letter-spacing: 0.2px; }
+.subtitle { font-size: clamp(16px, 1.6vw, 20px); color: var(--color-muted); }
+
+/* Modal */
+.modal {
+	position: fixed; inset: 0; display: grid; place-items: center;
+	background: color-mix(in oklab, #000, transparent 60%);
+}
+.modal__dialog {
+	background: var(--color-surface);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	box-shadow: var(--shadow-md);
+	max-width: 640px; width: min(92vw, 640px);
+	padding: var(--space-6);
+}
+
+/* Tooltip */
+.tooltip { position: relative; display: inline-block; }
+.tooltip__bubble {
+	position: absolute; left: 50%; transform: translateX(-50%);
+	bottom: calc(100% + var(--space-2));
+	background: var(--color-elevated);
+	border: 1px solid var(--color-border);
+	color: var(--color-text);
+	padding: 6px 8px; border-radius: var(--radius-sm);
+	font-size: 12px; white-space: nowrap; pointer-events: none;
+	opacity: 0; transition: opacity 120ms ease;
+}
+.tooltip:hover .tooltip__bubble { opacity: 1; }
+
+/* Simple grid helper */
+.grid {
+	display: grid;
+	gap: var(--space-3);
+}
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+
+
+
