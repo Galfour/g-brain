@@ -4,24 +4,35 @@
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import BooleanGates from '$lib/levels/boolean-gates/BooleanGates.svelte';
-	import { getLevelConfig } from '$lib/levels/boolean-gates/config';
+	import { getLevelConfig as getBooleanGatesConfig } from '$lib/levels/boolean-gates/config';
 	import type { BooleanGatesConfig } from '$lib/levels/boolean-gates/types';
+	import ColorSorting from '$lib/levels/color-sorting/ColorSorting.svelte';
+	import { getLevelConfig as getColorSortingConfig } from '$lib/levels/color-sorting/config';
+	import type { ColorSortingConfig } from '$lib/levels/color-sorting/types';
 
-	let levelConfig: BooleanGatesConfig | null = $state(null);
+	let booleanGatesConfig: BooleanGatesConfig | null = $state(null);
+	let colorSortingConfig: ColorSortingConfig | null = $state(null);
 
 	$effect(() => {
 		const id = $page.url.searchParams.get('level');
 		if (id?.startsWith('boolean-gates-')) {
-			levelConfig = getLevelConfig(id);
+			booleanGatesConfig = getBooleanGatesConfig(id);
+			colorSortingConfig = null;
+		} else if (id?.startsWith('color-sorting-')) {
+			colorSortingConfig = getColorSortingConfig(id);
+			booleanGatesConfig = null;
 		} else {
-			levelConfig = null;
+			booleanGatesConfig = null;
+			colorSortingConfig = null;
 		}
 	});
 </script>
 
 <Column gap="var(--space-6)">
-	{#if levelConfig}
-		<BooleanGates config={levelConfig} />
+	{#if booleanGatesConfig}
+		<BooleanGates config={booleanGatesConfig} />
+	{:else if colorSortingConfig}
+		<ColorSorting config={colorSortingConfig} />
 	{:else}
 		<Column gap="var(--space-3)">
 			<Title>No level selected</Title>

@@ -1,4 +1,5 @@
 import { getLevelConfig } from './boolean-gates/config';
+import { getLevelConfig as getColorSortingConfig } from './color-sorting/config';
 
 export type LevelMeta = {
     id: string;
@@ -32,11 +33,34 @@ function getBooleanGatesLevels(): LevelMeta[] {
     });
 }
 
+// Generate color sorting levels from config
+function getColorSortingLevels(): LevelMeta[] {
+    const levelIds = Array.from({ length: 15 }, (_, i) => `color-sorting-${i + 1}`);
+    return levelIds.map(id => {
+        const config = getColorSortingConfig(id);
+        if (!config) {
+            throw new Error(`Missing config for level: ${id}`);
+        }
+        return {
+            id,
+            title: config.title,
+            description: config.subtitle,
+            tags: ['colors', 'sorting', config.property],
+            section: 'color-sorting'
+        };
+    });
+}
+
 export const sections: LevelSection[] = [
     {
         id: 'boolean-gates',
         title: 'Boolean Gates',
         levels: getBooleanGatesLevels()
+    },
+    {
+        id: 'color-sorting',
+        title: 'Color Sorting',
+        levels: getColorSortingLevels()
     }
 ];
 
