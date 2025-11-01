@@ -10,6 +10,7 @@ export type ColorSortingConfig = {
 	subtitle: string;
 	source: 'procgen' | 'fixed'; // Whether level uses procedural generation or is fixed
 	requiredCompletions: number; // Number of consecutive successes required to validate the level
+	wordExplanations?: Record<string, string>; // Simple explanations for new words introduced in this level
 };
 
 // Helper to convert RGB to hex string for CSS

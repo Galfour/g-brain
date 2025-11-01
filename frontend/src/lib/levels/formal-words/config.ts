@@ -255,6 +255,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Concatenate 2-4 English words together',
 			source: 'procgen',
 			requiredCompletions: 5,
+			wordExplanations: {
+				concatenate: 'To concatenate means to join words together in order, one after another. For example, "cat" + "dog" = "catdog".',
+				concatenation: 'Concatenation means joining words together in order, one after another. For example, "cat" + "dog" = "catdog".'
+			},
 			generateQuestion: generateRealConcatenate
 		},
 		'formal-words-2': {
@@ -291,6 +295,9 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if a binary or hexadecimal word is a palindrome',
 			source: 'procgen',
 			requiredCompletions: 20,
+			wordExplanations: {
+				palindrome: 'A palindrome is a word that reads the same forwards and backwards. For example, "101" and "aba" are palindromes.'
+			},
 			generateQuestion: generatePalindromeCheck
 		},
 		'formal-words-6': {
@@ -300,6 +307,9 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a prefix of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			wordExplanations: {
+				prefix: 'A prefix is a word that appears at the beginning of another word. For example, "ab" is a prefix of "abcd".'
+			},
 			generateQuestion: generateIsPrefix
 		},
 		'formal-words-7': {
@@ -309,6 +319,9 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a suffix of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			wordExplanations: {
+				suffix: 'A suffix is a word that appears at the end of another word. For example, "cd" is a suffix of "abcd".'
+			},
 			generateQuestion: generateIsSuffix
 		},
 		'formal-words-8': {
@@ -318,6 +331,9 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a substring of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			wordExplanations: {
+				substring: 'A substring is a word that appears anywhere inside another word (at the beginning, middle, or end). For example, "bc" is a substring of "abcd".'
+			},
 			generateQuestion: generateIsSubstring
 		}
 	};

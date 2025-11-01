@@ -291,7 +291,10 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 6: Sort by Hue',
 			subtitle: 'Arrange colors in hue order (circular - any starting point works)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			wordExplanations: {
+				hue: 'Hue is the type of color - like red, blue, yellow, green. It\'s what makes a color "red" rather than "blue".'
+			}
 		},
 		'color-sorting-7': {
 			numColors: 10,
@@ -309,7 +312,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 8: Sort by Saturation',
 			subtitle: 'Arrange colors from least saturated to most saturated',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			wordExplanations: {
+				saturation: 'Saturation is how intense or vivid a color is. A highly saturated red is bright and vibrant, while a low saturation red looks grayish or washed out.',
+				saturated: 'Saturation is how intense or vivid a color is. A highly saturated red is bright and vibrant, while a low saturation red looks grayish or washed out.'
+			}
 		},
 		'color-sorting-9': {
 			numColors: 5,
@@ -318,7 +325,10 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 9: Sort by Brightness',
 			subtitle: 'Arrange colors from darkest to brightest',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			wordExplanations: {
+				brightness: 'Brightness is how light or dark a color is. A bright color is light and closer to white, while a dark color is closer to black.'
+			}
 		},
 		'color-sorting-10': {
 			numColors: 10,

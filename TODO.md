@@ -3,7 +3,7 @@
 - [X] game completion: failure, success, reroll
 - [X] separate regeneratable from one-off levels
 - [X] refactor play/svelte
-- [] lessons
+- [] lessons before each exercise with new concept
 - [] level tree (with validation)
 - [] internationalisation
 - [] integration with rememboo or anki

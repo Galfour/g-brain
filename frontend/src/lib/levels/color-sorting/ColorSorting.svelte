@@ -5,6 +5,7 @@
 	import Card from '$lib/component/Card.svelte';
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
+	import TextWithTooltips from '$lib/component/TextWithTooltips.svelte';
 	import type { ColorSortingConfig, RGB } from './types';
 	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
 
@@ -68,8 +69,12 @@
 
 <Column gap="var(--space-6)">
 	<Column gap="var(--space-2)">
-		<Title>{config.title}</Title>
-		<Subtitle>{config.subtitle}</Subtitle>
+		<Title>
+			<TextWithTooltips text={config.title} wordExplanations={config.wordExplanations} />
+		</Title>
+		<Subtitle>
+			<TextWithTooltips text={config.subtitle} wordExplanations={config.wordExplanations} />
+		</Subtitle>
 	</Column>
 
 	<Row gap="var(--space-6)">

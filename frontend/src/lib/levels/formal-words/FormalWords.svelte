@@ -8,6 +8,7 @@
 	import BinaryChoice from '$lib/component/BinaryChoice.svelte';
 	import MultipleChoice from '$lib/component/MultipleChoice.svelte';
 	import Button from '$lib/component/Button.svelte';
+	import TextWithTooltips from '$lib/component/TextWithTooltips.svelte';
 	import type { FormalWordsConfig } from './types';
 
 	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
@@ -72,21 +73,29 @@
 
 <Column gap="var(--space-6)">
 	<Column gap="var(--space-2)">
-		<Title>{config.title}</Title>
-		<Subtitle>{config.subtitle}</Subtitle>
+		<Title>
+			<TextWithTooltips text={config.title} wordExplanations={config.wordExplanations} />
+		</Title>
+		<Subtitle>
+			<TextWithTooltips text={config.subtitle} wordExplanations={config.wordExplanations} />
+		</Subtitle>
 	</Column>
 
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
 				<div class="subtitle">Example</div>
-				<div style="font-size: 14px; color: var(--color-muted);">{question.example}</div>
+				<div style="font-size: 14px; color: var(--color-muted);">
+					<TextWithTooltips text={question.example} wordExplanations={config.wordExplanations} />
+				</div>
 			</Column>
 		</Card>
 
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle" style="font-size: 18px;">{question.prompt}</div>
+				<div class="subtitle" style="font-size: 18px;">
+					<TextWithTooltips text={question.prompt} wordExplanations={config.wordExplanations} />
+				</div>
 				
 				{#if config.answerType === 'text'}
 					<TextInput
