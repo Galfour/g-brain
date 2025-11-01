@@ -16,7 +16,7 @@
 	import ControlZone from '$lib/levels/control-zone/ControlZone.svelte';
 	import { getLevelConfig as getControlZoneConfig } from '$lib/levels/control-zone/config';
 	import type { ControlZoneConfig } from '$lib/levels/control-zone/types';
-	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress } from '$lib/player-data';
+	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress, getRequiredCompletionsForLevel } from '$lib/player-data';
 	import { levels } from '$lib/levels';
 
 	let booleanGatesConfig: BooleanGatesConfig | null = $state(null);
@@ -26,6 +26,7 @@
 	let completionModalOpen = $state(false);
 	let completionStatus: 'success' | 'failure' | null = $state(null);
 	let validationProgress = $state(0);
+	let requiredCompletions = $state(2); // Default to 2, will be updated based on level
 	let levelKey = $state(0); // Key to force component remount for regeneration
 
 	$effect(() => {
@@ -40,6 +41,8 @@
 		if (id && id !== currentLevelId) {
 			currentLevelId = id;
 			trackLevelStart(id);
+			// Update required completions based on level type
+			requiredCompletions = getRequiredCompletionsForLevel(id);
 			// Reset modal state when level changes
 			completionModalOpen = false;
 			completionStatus = null;
@@ -142,27 +145,27 @@
 	{/if}
 </Column>
 
-<Modal open={completionModalOpen} onclose={closeModal} title={validationProgress >= 3 && completionStatus === 'success' ? 'Level Validated!' : (completionStatus === 'success' ? 'Level Complete!' : 'Level Failed')}>
+<Modal open={completionModalOpen} onclose={closeModal} title={validationProgress >= requiredCompletions && completionStatus === 'success' ? 'Level Validated!' : (completionStatus === 'success' ? 'Level Complete!' : 'Level Failed')}>
 	<Column gap="var(--space-4)">
 		{#if completionStatus === 'success'}
-			{#if validationProgress >= 3}
-				<Subtitle>Level Validated! You've completed this level 3 times in a row.</Subtitle>
+			{#if validationProgress >= requiredCompletions}
+				<Subtitle>Level Validated! You've completed this level {requiredCompletions} times in a row.</Subtitle>
 			{:else}
 				<Subtitle>Congratulations! You completed this level.</Subtitle>
 			{/if}
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-primary);">
-				{validationProgress}/3
+				{validationProgress}/{requiredCompletions}
 			</div>
 		{:else}
 			<Subtitle>Don't give up! Try again to master this level.</Subtitle>
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-muted);">
-				0/3
+				0/{requiredCompletions}
 			</div>
 		{/if}
 		<Row gap="var(--space-3)" style="justify-content: center;">
-			{#if completionStatus === 'failure' || (completionStatus === 'success' && validationProgress < 3)}
+			{#if completionStatus === 'failure' || (completionStatus === 'success' && validationProgress < requiredCompletions)}
 				<Button onclick={handleRetry}>Retry</Button>
-			{:else if completionStatus === 'success' && validationProgress >= 3}
+			{:else if completionStatus === 'success' && validationProgress >= requiredCompletions}
 				<Button onclick={handleNext}>Next</Button>
 			{/if}
 			<Button onclick={closeModal} variant="ghost">Go to levels list</Button>

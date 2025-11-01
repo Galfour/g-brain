@@ -1,4 +1,5 @@
 import type { PlayerData, LevelStart, LevelCompletion, LevelCompletionStatus } from './types';
+import { levels } from '$lib/levels';
 
 const CURRENT_PLAYER_KEY = 'g-brain-current-player';
 const PLAYER_DATA_PREFIX = 'g-brain-player-data-';
@@ -276,8 +277,21 @@ export function clearPlayerData(playerName?: string): void {
 }
 
 /**
+ * Get the required number of completions for a level.
+ * Fixed levels need 2, procgen levels need 5.
+ */
+function getRequiredCompletions(levelId: string): number {
+	const level = levels.find(l => l.id === levelId);
+	if (!level) {
+		// Default to 3 for backward compatibility if level not found
+		return 3;
+	}
+	return level.isProcgen ? 5 : 2;
+}
+
+/**
  * Get the validation progress for a level (number of consecutive successes).
- * Returns a number from 0 to 3 representing how many consecutive successes
+ * Returns a number from 0 to the required completions representing how many consecutive successes
  * there are from the most recent completion.
  */
 export function getValidationProgress(levelId: string, playerName?: string): number {
@@ -285,6 +299,7 @@ export function getValidationProgress(levelId: string, playerName?: string): num
 	if (!name) return 0;
 	
 	const data = getPlayerData(name);
+	const requiredCompletions = getRequiredCompletions(levelId);
 	
 	// Get all completions for this level, sorted by completion time (most recent first)
 	const levelCompletions = data.levelCompletions
@@ -300,7 +315,7 @@ export function getValidationProgress(levelId: string, playerName?: string): num
 	for (const completion of levelCompletions) {
 		if (completion.status === 'success') {
 			count++;
-			if (count >= 3) break; // No need to count beyond 3
+			if (count >= requiredCompletions) break; // No need to count beyond required
 		} else {
 			break; // Failure breaks the streak
 		}
@@ -310,10 +325,18 @@ export function getValidationProgress(levelId: string, playerName?: string): num
 }
 
 /**
- * Check if a level is validated (succeeded 3 times in a row).
- * Looks at the most recent completions for the level and checks if the last 3 are all successes.
+ * Get the required number of completions for a level (2 for fixed, 5 for procgen).
+ */
+export function getRequiredCompletionsForLevel(levelId: string): number {
+	return getRequiredCompletions(levelId);
+}
+
+/**
+ * Check if a level is validated (succeeded required number of times in a row).
+ * Fixed levels need 2 completions, procgen levels need 5.
  */
 export function isLevelValidated(levelId: string, playerName?: string): boolean {
-	return getValidationProgress(levelId, playerName) >= 3;
+	const requiredCompletions = getRequiredCompletions(levelId);
+	return getValidationProgress(levelId, playerName) >= requiredCompletions;
 }
 

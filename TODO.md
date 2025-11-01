@@ -1,7 +1,7 @@
 # features
 - [X] player data
 - [X] game completion: failure, success, reroll
-- [] separate regeneratable from one-off levels
+- [X] separate regeneratable from one-off levels
 - [] refactor play/svelte
 - [] lessons
 - [] level categories
@@ -23,3 +23,5 @@ boolean-gates:
 - [] fixed size for cards
 control-zone:
 - [] keyboard input
+color-sorting:
+- hardcore mode: not allowed to do a bad swap

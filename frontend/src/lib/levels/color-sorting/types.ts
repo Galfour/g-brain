@@ -8,6 +8,7 @@ export type ColorSortingConfig = {
 	generateColors: () => RGB[]; // Function that generates unique colors
 	title: string;
 	subtitle: string;
+	isProcgen: boolean; // true if level uses procedural generation, false if fixed
 };
 
 // Helper to convert RGB to hex string for CSS

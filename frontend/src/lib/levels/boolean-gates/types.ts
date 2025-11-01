@@ -26,4 +26,5 @@ export type BooleanGatesConfig = {
 	outputColors: string[]; // Color for each output
 	title: string;
 	subtitle: string;
+	isProcgen: boolean; // true if level uses procedural generation, false if fixed
 };

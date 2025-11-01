@@ -143,16 +143,63 @@ main.main {
 /* Tooltip */
 .tooltip { position: relative; display: inline-block; }
 .tooltip__bubble {
-	position: absolute; left: 50%; transform: translateX(-50%);
-	bottom: calc(100% + var(--space-2));
+	position: fixed;
 	background: var(--color-elevated);
 	border: 1px solid var(--color-border);
 	color: var(--color-text);
-	padding: 6px 8px; border-radius: var(--radius-sm);
-	font-size: 12px; white-space: nowrap; pointer-events: none;
-	opacity: 0; transition: opacity 120ms ease;
+	padding: 6px 8px; 
+	border-radius: var(--radius-sm);
+	font-size: 12px; 
+	white-space: nowrap; 
+	pointer-events: none;
+	opacity: 0; 
+	transition: opacity 120ms ease;
+	visibility: hidden;
+	z-index: 1000;
+	box-shadow: var(--shadow-md);
 }
-.tooltip:hover .tooltip__bubble { opacity: 1; }
+.tooltip__bubble.visible {
+	opacity: 1;
+	visibility: visible;
+}
+.tooltip__bubble--top::after,
+.tooltip__bubble--bottom::after,
+.tooltip__bubble--left::after,
+.tooltip__bubble--right::after {
+	content: '';
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-style: solid;
+}
+.tooltip__bubble--top::after {
+	bottom: -5px;
+	left: 50%;
+	transform: translateX(-50%);
+	border-width: 5px 5px 0 5px;
+	border-color: var(--color-elevated) transparent transparent transparent;
+}
+.tooltip__bubble--bottom::after {
+	top: -5px;
+	left: 50%;
+	transform: translateX(-50%);
+	border-width: 0 5px 5px 5px;
+	border-color: transparent transparent var(--color-elevated) transparent;
+}
+.tooltip__bubble--left::after {
+	right: -5px;
+	top: 50%;
+	transform: translateY(-50%);
+	border-width: 5px 0 5px 5px;
+	border-color: transparent transparent transparent var(--color-elevated);
+}
+.tooltip__bubble--right::after {
+	left: -5px;
+	top: 50%;
+	transform: translateY(-50%);
+	border-width: 5px 5px 5px 0;
+	border-color: transparent var(--color-elevated) transparent transparent;
+}
 
 /* Simple grid helper */
 .grid {

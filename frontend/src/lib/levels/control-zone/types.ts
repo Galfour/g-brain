@@ -38,4 +38,5 @@ export type ControlZoneConfig = {
 	transforms: Transform[];
 	obstacles: Obstacle[];
 	buttons: Button[];
+	isProcgen: boolean; // true if level uses procedural generation, false if fixed
 };

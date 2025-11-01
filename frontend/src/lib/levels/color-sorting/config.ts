@@ -244,105 +244,120 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			property: 'redness',
 			generateColors: () => generateColorsByRedness(5),
 			title: 'Color Sorting 1: Sort by Redness',
-			subtitle: 'Arrange colors from least red to most red (5 colors)'
+			subtitle: 'Arrange colors from least red to most red (5 colors)',
+			isProcgen: true
 		},
 		'color-sorting-2': {
 			numColors: 5,
 			property: 'greenness',
 			generateColors: () => generateColorsByGreenness(5),
 			title: 'Color Sorting 2: Sort by Greenness',
-			subtitle: 'Arrange colors from least green to most green (5 colors)'
+			subtitle: 'Arrange colors from least green to most green (5 colors)',
+			isProcgen: true
 		},
 		'color-sorting-3': {
 			numColors: 5,
 			property: 'blueness',
 			generateColors: () => generateColorsByBlueness(5),
 			title: 'Color Sorting 3: Sort by Blueness',
-			subtitle: 'Arrange colors from least blue to most blue (5 colors)'
+			subtitle: 'Arrange colors from least blue to most blue (5 colors)',
+			isProcgen: true
 		},
 		'color-sorting-4': {
 			numColors: 10,
 			property: 'redness',
 			generateColors: () => generateColorsByRedness(10),
 			title: 'Color Sorting 4: More Redness',
-			subtitle: 'Sort 10 colors by redness'
+			subtitle: 'Sort 10 colors by redness',
+			isProcgen: true
 		},
 		'color-sorting-5': {
 			numColors: 10,
 			property: 'greenness',
 			generateColors: () => generateColorsByGreenness(10),
 			title: 'Color Sorting 5: More Greenness',
-			subtitle: 'Sort 10 colors by greenness'
+			subtitle: 'Sort 10 colors by greenness',
+			isProcgen: true
 		},
 		'color-sorting-6': {
 			numColors: 5,
 			property: 'hue',
 			generateColors: () => generateColorsByHue(5),
 			title: 'Color Sorting 6: Sort by Hue',
-			subtitle: 'Arrange colors in hue order (circular - any starting point works)'
+			subtitle: 'Arrange colors in hue order (circular - any starting point works)',
+			isProcgen: true
 		},
 		'color-sorting-7': {
 			numColors: 10,
 			property: 'hue',
 			generateColors: () => generateColorsByHue(10),
 			title: 'Color Sorting 7: More Hues',
-			subtitle: 'Sort 10 colors by hue (circular order)'
+			subtitle: 'Sort 10 colors by hue (circular order)',
+			isProcgen: true
 		},
 		'color-sorting-8': {
 			numColors: 5,
 			property: 'saturation',
 			generateColors: () => generateColorsBySaturation(5),
 			title: 'Color Sorting 8: Sort by Saturation',
-			subtitle: 'Arrange colors from least saturated to most saturated'
+			subtitle: 'Arrange colors from least saturated to most saturated',
+			isProcgen: true
 		},
 		'color-sorting-9': {
 			numColors: 5,
 			property: 'brightness',
 			generateColors: () => generateColorsByBrightness(5),
 			title: 'Color Sorting 9: Sort by Brightness',
-			subtitle: 'Arrange colors from darkest to brightest'
+			subtitle: 'Arrange colors from darkest to brightest',
+			isProcgen: true
 		},
 		'color-sorting-10': {
 			numColors: 10,
 			property: 'saturation',
 			generateColors: () => generateColorsBySaturation(10),
 			title: 'Color Sorting 10: More Saturation',
-			subtitle: 'Sort 10 colors by saturation'
+			subtitle: 'Sort 10 colors by saturation',
+			isProcgen: true
 		},
 		'color-sorting-11': {
 			numColors: 10,
 			property: 'brightness',
 			generateColors: () => generateColorsByBrightness(10),
 			title: 'Color Sorting 11: More Brightness',
-			subtitle: 'Sort 10 colors by brightness'
+			subtitle: 'Sort 10 colors by brightness',
+			isProcgen: true
 		},
 		'color-sorting-12': {
 			numColors: 20,
 			property: 'redness',
 			generateColors: () => generateMixedColorsByRedness(20),
 			title: 'Color Sorting 12: Challenge Redness',
-			subtitle: 'Sort 20 colors by redness (colors vary in other properties too)'
+			subtitle: 'Sort 20 colors by redness (colors vary in other properties too)',
+			isProcgen: true
 		},
 		'color-sorting-13': {
 			numColors: 20,
 			property: 'hue',
 			generateColors: () => generateMixedColorsByHue(20),
 			title: 'Color Sorting 13: Challenge Hue',
-			subtitle: 'Sort 20 colors by hue (colors vary in brightness, saturation fixed)'
+			subtitle: 'Sort 20 colors by hue (colors vary in brightness, saturation fixed)',
+			isProcgen: true
 		},
 		'color-sorting-14': {
 			numColors: 50,
 			property: 'brightness',
 			generateColors: () => generateMixedColorsByBrightness(50),
 			title: 'Color Sorting 14: Ultimate Challenge',
-			subtitle: 'Sort 50 colors by brightness (colors vary in saturation, hue fixed)'
+			subtitle: 'Sort 50 colors by brightness (colors vary in saturation, hue fixed)',
+			isProcgen: true
 		},
 		'color-sorting-15': {
 			numColors: 50,
 			property: 'hue',
 			generateColors: () => generateMixedColorsByHue(50),
 			title: 'Color Sorting 15: Ultimate Hue Challenge',
-			subtitle: 'Sort 50 colors by hue (colors vary in brightness, saturation fixed)'
+			subtitle: 'Sort 50 colors by hue (colors vary in brightness, saturation fixed)',
+			isProcgen: true
 		}
 	};
 

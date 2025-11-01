@@ -8,6 +8,7 @@ export type LevelMeta = {
     description: string;
     tags: string[];
     section?: string;
+    isProcgen: boolean; // true if level uses procedural generation, false if fixed
 };
 
 export type LevelSection = {
@@ -29,7 +30,8 @@ function getBooleanGatesLevels(): LevelMeta[] {
             title: config.title,
             description: config.subtitle,
             tags: ['logic', 'boolean'],
-            section: 'boolean-gates'
+            section: 'boolean-gates',
+            isProcgen: config.isProcgen ?? false
         };
     });
 }
@@ -47,7 +49,8 @@ function getColorSortingLevels(): LevelMeta[] {
             title: config.title,
             description: config.subtitle,
             tags: ['colors', 'sorting', config.property],
-            section: 'color-sorting'
+            section: 'color-sorting',
+            isProcgen: config.isProcgen ?? false
         };
     });
 }
@@ -65,7 +68,8 @@ function getControlZoneLevels(): LevelMeta[] {
             title: config.title,
             description: config.subtitle,
             tags: ['control', 'navigation', 'spatial'],
-            section: 'control-zone'
+            section: 'control-zone',
+            isProcgen: config.isProcgen ?? false
         };
     });
 }
