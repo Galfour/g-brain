@@ -16,10 +16,13 @@
 	import ControlZone from '$lib/levels/control-zone/ControlZone.svelte';
 	import { getLevelConfig as getControlZoneConfig } from '$lib/levels/control-zone/config';
 	import type { ControlZoneConfig } from '$lib/levels/control-zone/types';
+	import FormalWords from '$lib/levels/formal-words/FormalWords.svelte';
+	import { getLevelConfig as getFormalWordsConfig } from '$lib/levels/formal-words/config';
+	import type { FormalWordsConfig } from '$lib/levels/formal-words/types';
 	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress, getRequiredCompletionsForLevel } from '$lib/player-data';
 	import { levels } from '$lib/levels';
 
-	type LevelConfig = BooleanGatesConfig | ColorSortingConfig | ControlZoneConfig;
+	type LevelConfig = BooleanGatesConfig | ColorSortingConfig | ControlZoneConfig | FormalWordsConfig;
 
 	type LevelRegistry = {
 		prefix: string;
@@ -38,12 +41,16 @@
 		{
 			prefix: 'control-zone-',
 			getConfig: getControlZoneConfig
+		},
+		{
+			prefix: 'formal-words-',
+			getConfig: getFormalWordsConfig
 		}
 	];
 
 	let currentLevelId = $state<string | null>(null);
 	let currentConfig = $state<LevelConfig | null>(null);
-	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | null>(null);
+	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | null>(null);
 	let completionModalOpen = $state(false);
 	let completionStatus: 'success' | 'failure' | null = $state(null);
 	let validationProgress = $state(0);
@@ -79,7 +86,7 @@
 			const registry = findLevelRegistry(id);
 			if (registry) {
 				currentConfig = registry.getConfig(id);
-				currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone';
+				currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words';
 			} else {
 				currentConfig = null;
 				currentLevelType = null;
@@ -153,6 +160,10 @@
 	{:else if currentLevelType === 'control-zone' && currentConfig}
 		{#key levelKey}
 			<ControlZone config={currentConfig as ControlZoneConfig} oncomplete={handleComplete} />
+		{/key}
+	{:else if currentLevelType === 'formal-words' && currentConfig}
+		{#key levelKey}
+			<FormalWords config={currentConfig as FormalWordsConfig} oncomplete={handleComplete} />
 		{/key}
 	{:else}
 		<Column gap="var(--space-3)">

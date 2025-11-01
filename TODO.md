@@ -4,7 +4,7 @@
 - [X] separate regeneratable from one-off levels
 - [X] refactor play/svelte
 - [] lessons
-- [] level categories
+- [] level tree (with validation)
 - [] internationalisation
 - [] integration with rememboo or anki
 
@@ -13,7 +13,7 @@
 
 # new levels
 - [X] control dot to target zone
-- [] basic exercises on words
+- [X] basic exercises on words
 - [] estimate relative size
 - [] add/multiply
 - [] some french lesson

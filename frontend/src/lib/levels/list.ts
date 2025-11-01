@@ -1,6 +1,7 @@
 import { getLevelConfig } from './boolean-gates/config';
 import { getLevelConfig as getColorSortingConfig } from './color-sorting/config';
 import { getLevelConfig as getControlZoneConfig } from './control-zone/config';
+import { getLevelConfig as getFormalWordsConfig } from './formal-words/config';
 
 export type LevelMeta = {
     id: string;
@@ -74,6 +75,25 @@ function getControlZoneLevels(): LevelMeta[] {
     });
 }
 
+// Generate formal words levels from config
+function getFormalWordsLevels(): LevelMeta[] {
+    const levelIds = Array.from({ length: 8 }, (_, i) => `formal-words-${i + 1}`);
+    return levelIds.map(id => {
+        const config = getFormalWordsConfig(id);
+        if (!config) {
+            throw new Error(`Missing config for level: ${id}`);
+        }
+        return {
+            id,
+            title: config.title,
+            description: config.subtitle,
+            tags: ['formal', 'words', 'strings'],
+            section: 'formal-words',
+            isProcgen: config.isProcgen ?? false
+        };
+    });
+}
+
 export const sections: LevelSection[] = [
     {
         id: 'boolean-gates',
@@ -89,6 +109,11 @@ export const sections: LevelSection[] = [
         id: 'control-zone',
         title: 'Control Zone',
         levels: getControlZoneLevels()
+    },
+    {
+        id: 'formal-words',
+        title: 'Formal Words',
+        levels: getFormalWordsLevels()
     }
 ];
 
