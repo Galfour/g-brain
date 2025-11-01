@@ -30,7 +30,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 		'control-zone-1': {
 			title: 'Control Zone 1: Simple Translation',
 			subtitle: 'Use the buttons to move the player to the target zone',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			targetZone: {
 				x: 300,
 				y: 150, // Up from start position
@@ -70,7 +71,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 		'control-zone-2': {
 			title: 'Control Zone 2: Two Directions',
 			subtitle: 'Navigate using two button pairs',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			targetZone: {
 				x: 450,
 				y: 150,
@@ -130,7 +132,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 		'control-zone-3': {
 			title: 'Control Zone 3: Diagonal Movement',
 			subtitle: 'Find the diagonal translation pattern',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 5,
 			targetZone: {
 				x: 450,
 				y: 450,
@@ -190,7 +193,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 		'control-zone-4': {
 			title: 'Control Zone 4: Translation and Rotation',
 			subtitle: 'Combine translation with rotation around the center',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			targetZone: {
 				x: 450,
 				y: 150,

@@ -278,7 +278,7 @@ export function clearPlayerData(playerName?: string): void {
 
 /**
  * Get the required number of completions for a level.
- * Fixed levels need 2, procgen levels need 5.
+ * Uses the requiredCompletions property from the level meta.
  */
 function getRequiredCompletions(levelId: string): number {
 	const level = levels.find(l => l.id === levelId);
@@ -286,7 +286,7 @@ function getRequiredCompletions(levelId: string): number {
 		// Default to 3 for backward compatibility if level not found
 		return 3;
 	}
-	return level.isProcgen ? 5 : 2;
+	return level.requiredCompletions;
 }
 
 /**
@@ -325,7 +325,7 @@ export function getValidationProgress(levelId: string, playerName?: string): num
 }
 
 /**
- * Get the required number of completions for a level (2 for fixed, 5 for procgen).
+ * Get the required number of completions for a level.
  */
 export function getRequiredCompletionsForLevel(levelId: string): number {
 	return getRequiredCompletions(levelId);
@@ -333,7 +333,6 @@ export function getRequiredCompletionsForLevel(levelId: string): number {
 
 /**
  * Check if a level is validated (succeeded required number of times in a row).
- * Fixed levels need 2 completions, procgen levels need 5.
  */
 export function isLevelValidated(levelId: string, playerName?: string): boolean {
 	const requiredCompletions = getRequiredCompletions(levelId);

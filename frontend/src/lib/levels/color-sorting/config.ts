@@ -245,7 +245,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByRedness(5),
 			title: 'Color Sorting 1: Sort by Redness',
 			subtitle: 'Arrange colors from least red to most red (5 colors)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-2': {
 			numColors: 5,
@@ -253,7 +254,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByGreenness(5),
 			title: 'Color Sorting 2: Sort by Greenness',
 			subtitle: 'Arrange colors from least green to most green (5 colors)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-3': {
 			numColors: 5,
@@ -261,7 +263,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByBlueness(5),
 			title: 'Color Sorting 3: Sort by Blueness',
 			subtitle: 'Arrange colors from least blue to most blue (5 colors)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-4': {
 			numColors: 10,
@@ -269,7 +272,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByRedness(10),
 			title: 'Color Sorting 4: More Redness',
 			subtitle: 'Sort 10 colors by redness',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-5': {
 			numColors: 10,
@@ -277,7 +281,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByGreenness(10),
 			title: 'Color Sorting 5: More Greenness',
 			subtitle: 'Sort 10 colors by greenness',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-6': {
 			numColors: 5,
@@ -285,7 +290,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByHue(5),
 			title: 'Color Sorting 6: Sort by Hue',
 			subtitle: 'Arrange colors in hue order (circular - any starting point works)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-7': {
 			numColors: 10,
@@ -293,7 +299,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByHue(10),
 			title: 'Color Sorting 7: More Hues',
 			subtitle: 'Sort 10 colors by hue (circular order)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-8': {
 			numColors: 5,
@@ -301,7 +308,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsBySaturation(5),
 			title: 'Color Sorting 8: Sort by Saturation',
 			subtitle: 'Arrange colors from least saturated to most saturated',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-9': {
 			numColors: 5,
@@ -309,7 +317,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByBrightness(5),
 			title: 'Color Sorting 9: Sort by Brightness',
 			subtitle: 'Arrange colors from darkest to brightest',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-10': {
 			numColors: 10,
@@ -317,7 +326,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsBySaturation(10),
 			title: 'Color Sorting 10: More Saturation',
 			subtitle: 'Sort 10 colors by saturation',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-11': {
 			numColors: 10,
@@ -325,7 +335,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateColorsByBrightness(10),
 			title: 'Color Sorting 11: More Brightness',
 			subtitle: 'Sort 10 colors by brightness',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-12': {
 			numColors: 20,
@@ -333,7 +344,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateMixedColorsByRedness(20),
 			title: 'Color Sorting 12: Challenge Redness',
 			subtitle: 'Sort 20 colors by redness (colors vary in other properties too)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-13': {
 			numColors: 20,
@@ -341,7 +353,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateMixedColorsByHue(20),
 			title: 'Color Sorting 13: Challenge Hue',
 			subtitle: 'Sort 20 colors by hue (colors vary in brightness, saturation fixed)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-14': {
 			numColors: 50,
@@ -349,7 +362,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateMixedColorsByBrightness(50),
 			title: 'Color Sorting 14: Ultimate Challenge',
 			subtitle: 'Sort 50 colors by brightness (colors vary in saturation, hue fixed)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		},
 		'color-sorting-15': {
 			numColors: 50,
@@ -357,7 +371,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			generateColors: () => generateMixedColorsByHue(50),
 			title: 'Color Sorting 15: Ultimate Hue Challenge',
 			subtitle: 'Sort 50 colors by hue (colors vary in brightness, saturation fixed)',
-			isProcgen: true
+			source: 'procgen',
+			requiredCompletions: 5
 		}
 	};
 

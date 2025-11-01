@@ -253,7 +253,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'text',
 			title: 'Formal Words 1: Real Word Concatenation',
 			subtitle: 'Concatenate 2-4 English words together',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 5,
 			generateQuestion: generateRealConcatenate
 		},
 		'formal-words-2': {
@@ -261,7 +262,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'text',
 			title: 'Formal Words 2: Formal Word Concatenation',
 			subtitle: 'Concatenate 2-4 binary or hexadecimal words together',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 5,
 			generateQuestion: generateFormalConcatenate
 		},
 		'formal-words-3': {
@@ -269,7 +271,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'text',
 			title: 'Formal Words 3: Real Word Reverse',
 			subtitle: 'Write the reverse of an English word',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 5,
 			generateQuestion: generateRealReverse
 		},
 		'formal-words-4': {
@@ -277,7 +280,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'text',
 			title: 'Formal Words 4: Formal Word Reverse',
 			subtitle: 'Write the reverse of a binary or hexadecimal word',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 5,
 			generateQuestion: generateFormalReverse
 		},
 		'formal-words-5': {
@@ -285,7 +289,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'binary',
 			title: 'Formal Words 5: Palindrome Check',
 			subtitle: 'Determine if a binary or hexadecimal word is a palindrome',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 20,
 			generateQuestion: generatePalindromeCheck
 		},
 		'formal-words-6': {
@@ -293,7 +298,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'binary',
 			title: 'Formal Words 6: Is Prefix',
 			subtitle: 'Determine if one word is a prefix of another',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 20,
 			generateQuestion: generateIsPrefix
 		},
 		'formal-words-7': {
@@ -301,7 +307,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'binary',
 			title: 'Formal Words 7: Is Suffix',
 			subtitle: 'Determine if one word is a suffix of another',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 20,
 			generateQuestion: generateIsSuffix
 		},
 		'formal-words-8': {
@@ -309,7 +316,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			answerType: 'binary',
 			title: 'Formal Words 8: Is Substring',
 			subtitle: 'Determine if one word is a substring of another',
-			isProcgen: true,
+			source: 'procgen',
+			requiredCompletions: 20,
 			generateQuestion: generateIsSubstring
 		}
 	};

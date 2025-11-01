@@ -13,7 +13,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1]], // Output 1 blue, output 2 green
 			title: 'Boolean Gates 1: Simple OR Patterns',
 			subtitle: 'Multiple outputs with OR gates - find which levers control which outputs',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b || c, d || e || f];
@@ -29,7 +30,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
 			title: 'Boolean Gates 2: OR Gate Patterns',
 			subtitle: 'Three outputs, each with its own OR group',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b, c || d, e || f];
@@ -45,7 +47,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
 			title: 'Boolean Gates 3: AND Patterns',
 			subtitle: 'AND gates with multiple outputs',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a && b, c && d, e && f];
@@ -62,7 +65,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1]], // Output 1 blue, output 2 green
 			title: 'Boolean Gates 4: Mixed Patterns',
 			subtitle: 'Mix of OR and AND gates - some levers do nothing',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b || c, d && e && f];
@@ -78,7 +82,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
 			title: 'Boolean Gates 5: Triple Groups',
 			subtitle: 'Three outputs, each OR of three inputs',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
 				return [a || b || c, d || e || f, g || h];
@@ -94,7 +99,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
 			title: 'Boolean Gates 6: Four Output Groups',
 			subtitle: 'Four outputs, each OR of two inputs',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
 				return [a || b, c || d, e || f, g || h];
@@ -110,7 +116,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2]], // Each output matches its inputs
 			title: 'Boolean Gates 7: Complex OR Patterns',
 			subtitle: 'Larger groups with mixed logic',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i] = inputs;
 				return [a || b || c || d, e || f, g || h || i];
@@ -126,7 +133,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
 			title: 'Boolean Gates 8: Multiple Patterns',
 			subtitle: 'Four outputs with varied gate combinations',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j] = inputs;
 				return [a || b, c && d && e, f || g, h && i && j];
@@ -142,7 +150,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
 			title: 'Boolean Gates 9: Advanced Patterns',
 			subtitle: 'Complex patterns with XOR and mixed gates - find the useless levers',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
 				return [
@@ -163,7 +172,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			outputColors: [colors[0], colors[1], colors[2], colors[3], colors[4]], // Each output matches its inputs
 			title: 'Boolean Gates 10: Ultimate Challenge',
 			subtitle: 'Most complex with multiple gate types and patterns',
-			isProcgen: false,
+			source: 'fixed',
+			requiredCompletions: 2,
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
 				return [

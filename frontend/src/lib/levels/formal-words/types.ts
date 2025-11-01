@@ -5,7 +5,8 @@ export type FormalWordsConfig = {
 	answerType: AnswerType;
 	title: string;
 	subtitle: string;
-	isProcgen: boolean;
+	source: 'procgen' | 'fixed'; // Whether level uses procedural generation or is fixed
+	requiredCompletions: number; // Number of consecutive successes required to validate the level
 	// For level generation
 	generateQuestion: () => {
 		prompt: string;

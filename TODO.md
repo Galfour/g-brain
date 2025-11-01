@@ -24,4 +24,6 @@ boolean-gates:
 control-zone:
 - [] keyboard input
 color-sorting:
-- hardcore mode: not allowed to do a bad swap
+- [] hardcore mode: not allowed to do a bad swap
+formal-words:
+- [] more levels

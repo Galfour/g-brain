@@ -9,7 +9,8 @@ export type LevelMeta = {
     description: string;
     tags: string[];
     section?: string;
-    isProcgen: boolean; // true if level uses procedural generation, false if fixed
+    source: 'procgen' | 'fixed'; // Whether level uses procedural generation or is fixed
+    requiredCompletions: number; // Number of consecutive successes required to validate the level
 };
 
 export type LevelSection = {
@@ -32,7 +33,8 @@ function getBooleanGatesLevels(): LevelMeta[] {
             description: config.subtitle,
             tags: ['logic', 'boolean'],
             section: 'boolean-gates',
-            isProcgen: config.isProcgen ?? false
+            source: config.source,
+            requiredCompletions: config.requiredCompletions
         };
     });
 }
@@ -51,7 +53,8 @@ function getColorSortingLevels(): LevelMeta[] {
             description: config.subtitle,
             tags: ['colors', 'sorting', config.property],
             section: 'color-sorting',
-            isProcgen: config.isProcgen ?? false
+            source: config.source,
+            requiredCompletions: config.requiredCompletions
         };
     });
 }
@@ -70,7 +73,8 @@ function getControlZoneLevels(): LevelMeta[] {
             description: config.subtitle,
             tags: ['control', 'navigation', 'spatial'],
             section: 'control-zone',
-            isProcgen: config.isProcgen ?? false
+            source: config.source,
+            requiredCompletions: config.requiredCompletions
         };
     });
 }
@@ -89,7 +93,8 @@ function getFormalWordsLevels(): LevelMeta[] {
             description: config.subtitle,
             tags: ['formal', 'words', 'strings'],
             section: 'formal-words',
-            isProcgen: config.isProcgen ?? false
+            source: config.source,
+            requiredCompletions: config.requiredCompletions
         };
     });
 }

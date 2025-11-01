@@ -27,15 +27,15 @@
 					<Column gap="var(--space-3)">
 						<Row gap="var(--space-2)" style="align-items: center;">
 							<div class="title" style="font-size: 18px;">{level.title}</div>
-							{#if level.isProcgen}
-								<ToolTip text="Procedurally generated level - requires 5 completions in a row to validate">
+							{#if level.source === 'procgen'}
+								<ToolTip text="Procedurally generated level - requires {level.requiredCompletions} completions in a row to validate">
 									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
 										<path d="M5.5 4.5L2 8L5.5 11.5M10.5 4.5L14 8L10.5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 										<circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5" fill="none"/>
 									</svg>
 								</ToolTip>
 							{:else}
-								<ToolTip text="Fixed level - requires 2 completions in a row to validate">
+								<ToolTip text="Fixed level - requires {level.requiredCompletions} completions in a row to validate">
 									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink: 0;">
 										<rect x="3" y="6" width="10" height="6" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
 										<path d="M6 6V4C6 3.44772 6.44772 3 7 3H9C9.55228 3 10 3.44772 10 4V6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
