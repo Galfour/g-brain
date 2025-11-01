@@ -19,78 +19,90 @@
 	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress, getRequiredCompletionsForLevel } from '$lib/player-data';
 	import { levels } from '$lib/levels';
 
-	let booleanGatesConfig: BooleanGatesConfig | null = $state(null);
-	let colorSortingConfig: ColorSortingConfig | null = $state(null);
-	let controlZoneConfig: ControlZoneConfig | null = $state(null);
+	type LevelConfig = BooleanGatesConfig | ColorSortingConfig | ControlZoneConfig;
+
+	type LevelRegistry = {
+		prefix: string;
+		getConfig: (id: string) => LevelConfig | null;
+	};
+
+	const levelRegistry: LevelRegistry[] = [
+		{
+			prefix: 'boolean-gates-',
+			getConfig: getBooleanGatesConfig
+		},
+		{
+			prefix: 'color-sorting-',
+			getConfig: getColorSortingConfig
+		},
+		{
+			prefix: 'control-zone-',
+			getConfig: getControlZoneConfig
+		}
+	];
+
 	let currentLevelId = $state<string | null>(null);
+	let currentConfig = $state<LevelConfig | null>(null);
+	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | null>(null);
 	let completionModalOpen = $state(false);
 	let completionStatus: 'success' | 'failure' | null = $state(null);
 	let validationProgress = $state(0);
-	let requiredCompletions = $state(2); // Default to 2, will be updated based on level
-	let levelKey = $state(0); // Key to force component remount for regeneration
+	let requiredCompletions = $state(2);
+	let levelKey = $state(0);
+
+	function resetModalState() {
+		completionModalOpen = false;
+		completionStatus = null;
+		validationProgress = 0;
+	}
+
+	function findLevelRegistry(levelId: string): LevelRegistry | null {
+		return levelRegistry.find(registry => levelId.startsWith(registry.prefix)) ?? null;
+	}
 
 	$effect(() => {
 		const id = $page.url.searchParams.get('level');
 		
-		// Ensure we have a current player before tracking
 		if (id && !getCurrentPlayer()) {
 			createNewPlayer();
 		}
 		
-		// Track level start only when level changes
 		if (id && id !== currentLevelId) {
 			currentLevelId = id;
 			trackLevelStart(id);
-			// Update required completions based on level type
 			requiredCompletions = getRequiredCompletionsForLevel(id);
-			// Reset modal state when level changes
-			completionModalOpen = false;
-			completionStatus = null;
-			validationProgress = 0;
-			levelKey = 0; // Reset key when level changes
+			resetModalState();
+			levelKey = 0;
 		}
 		
-		if (id?.startsWith('boolean-gates-')) {
-			booleanGatesConfig = getBooleanGatesConfig(id);
-			colorSortingConfig = null;
-			controlZoneConfig = null;
-		} else if (id?.startsWith('color-sorting-')) {
-			colorSortingConfig = getColorSortingConfig(id);
-			booleanGatesConfig = null;
-			controlZoneConfig = null;
-		} else if (id?.startsWith('control-zone-')) {
-			controlZoneConfig = getControlZoneConfig(id);
-			booleanGatesConfig = null;
-			colorSortingConfig = null;
+		if (id) {
+			const registry = findLevelRegistry(id);
+			if (registry) {
+				currentConfig = registry.getConfig(id);
+				currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone';
+			} else {
+				currentConfig = null;
+				currentLevelType = null;
+			}
 		} else {
-			booleanGatesConfig = null;
-			colorSortingConfig = null;
-			controlZoneConfig = null;
 			currentLevelId = null;
+			currentConfig = null;
+			currentLevelType = null;
 		}
 	});
 
 	function handleComplete(status: 'success' | 'failure') {
 		if (!currentLevelId) return;
 		
-		// Track completion
 		trackLevelCompletion(currentLevelId, status);
-		
-		// Get validation progress after tracking (includes this completion)
 		validationProgress = getValidationProgress(currentLevelId);
-		
-		// Show modal
 		completionStatus = status;
 		completionModalOpen = true;
 	}
 
 	function handleRetry() {
-		completionModalOpen = false;
-		completionStatus = null;
-		validationProgress = 0;
-		// Increment key to force component remount and regenerate level
+		resetModalState();
 		levelKey++;
-		// Track a new level start for the retry
 		if (currentLevelId) {
 			trackLevelStart(currentLevelId);
 		}
@@ -99,43 +111,48 @@
 	function handleNext() {
 		if (!currentLevelId) return;
 		
-		// Find next level
 		const currentIndex = levels.findIndex(l => l.id === currentLevelId);
 		if (currentIndex >= 0 && currentIndex < levels.length - 1) {
 			const nextLevel = levels[currentIndex + 1];
-			completionModalOpen = false;
-			completionStatus = null;
-			validationProgress = 0;
+			resetModalState();
 			goto(`/level/play?level=${nextLevel.id}`);
 		} else {
-			// No next level, go to level list
-			completionModalOpen = false;
-			completionStatus = null;
-			validationProgress = 0;
+			resetModalState();
 			goto('/levels/list');
 		}
 	}
 
 	function closeModal() {
-		completionModalOpen = false;
-		completionStatus = null;
-		validationProgress = 0;
+		resetModalState();
 		goto('/levels/list');
 	}
+
+	const modalTitle = $derived(
+		validationProgress >= requiredCompletions && completionStatus === 'success'
+			? 'Level Validated!'
+			: completionStatus === 'success'
+				? 'Level Complete!'
+				: completionStatus === 'failure'
+					? 'Level Failed'
+					: ''
+	);
+
+	const isLevelValidated = $derived(validationProgress >= requiredCompletions && completionStatus === 'success');
+	const showRetryButton = $derived(completionStatus === 'failure' || (completionStatus === 'success' && !isLevelValidated));
 </script>
 
 <Column gap="var(--space-6)">
-	{#if booleanGatesConfig}
+	{#if currentLevelType === 'boolean-gates' && currentConfig}
 		{#key levelKey}
-			<BooleanGates config={booleanGatesConfig} oncomplete={handleComplete} />
+			<BooleanGates config={currentConfig as BooleanGatesConfig} oncomplete={handleComplete} />
 		{/key}
-	{:else if colorSortingConfig}
+	{:else if currentLevelType === 'color-sorting' && currentConfig}
 		{#key levelKey}
-			<ColorSorting config={colorSortingConfig} oncomplete={handleComplete} />
+			<ColorSorting config={currentConfig as ColorSortingConfig} oncomplete={handleComplete} />
 		{/key}
-	{:else if controlZoneConfig}
+	{:else if currentLevelType === 'control-zone' && currentConfig}
 		{#key levelKey}
-			<ControlZone config={controlZoneConfig} oncomplete={handleComplete} />
+			<ControlZone config={currentConfig as ControlZoneConfig} oncomplete={handleComplete} />
 		{/key}
 	{:else}
 		<Column gap="var(--space-3)">
@@ -145,10 +162,10 @@
 	{/if}
 </Column>
 
-<Modal open={completionModalOpen} onclose={closeModal} title={validationProgress >= requiredCompletions && completionStatus === 'success' ? 'Level Validated!' : (completionStatus === 'success' ? 'Level Complete!' : 'Level Failed')}>
+<Modal open={completionModalOpen} onclose={closeModal} title={modalTitle}>
 	<Column gap="var(--space-4)">
 		{#if completionStatus === 'success'}
-			{#if validationProgress >= requiredCompletions}
+			{#if isLevelValidated}
 				<Subtitle>Level Validated! You've completed this level {requiredCompletions} times in a row.</Subtitle>
 			{:else}
 				<Subtitle>Congratulations! You completed this level.</Subtitle>
@@ -156,16 +173,16 @@
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-primary);">
 				{validationProgress}/{requiredCompletions}
 			</div>
-		{:else}
+		{:else if completionStatus === 'failure'}
 			<Subtitle>Don't give up! Try again to master this level.</Subtitle>
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-muted);">
 				0/{requiredCompletions}
 			</div>
 		{/if}
 		<Row gap="var(--space-3)" style="justify-content: center;">
-			{#if completionStatus === 'failure' || (completionStatus === 'success' && validationProgress < requiredCompletions)}
+			{#if showRetryButton}
 				<Button onclick={handleRetry}>Retry</Button>
-			{:else if completionStatus === 'success' && validationProgress >= requiredCompletions}
+			{:else if isLevelValidated}
 				<Button onclick={handleNext}>Next</Button>
 			{/if}
 			<Button onclick={closeModal} variant="ghost">Go to levels list</Button>

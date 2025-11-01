@@ -2,7 +2,7 @@
 - [X] player data
 - [X] game completion: failure, success, reroll
 - [X] separate regeneratable from one-off levels
-- [] refactor play/svelte
+- [X] refactor play/svelte
 - [] lessons
 - [] level categories
 - [] internationalisation
