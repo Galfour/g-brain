@@ -7,7 +7,7 @@
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import type { ControlZoneConfig, Transform } from './types';
 
-	let { config, children }: { config: ControlZoneConfig; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
 
 	// Player state: only x, y
 	const playerState = $state({
@@ -84,6 +84,17 @@
 		finalPlayerPos.y >= config.targetZone.y - config.targetZone.height / 2 &&
 		finalPlayerPos.y <= config.targetZone.y + config.targetZone.height / 2
 	);
+
+	// Track if completion has been called to avoid multiple calls
+	let completionCalled = $state(false);
+
+	// Call oncomplete when player reaches target
+	$effect(() => {
+		if (isInTarget && !completionCalled && oncomplete) {
+			completionCalled = true;
+			oncomplete('success');
+		}
+	});
 
 	// Check if a position is out of bounds or in an obstacle
 	function isPositionInvalid(pos: { x: number; y: number }): boolean {
@@ -174,6 +185,8 @@
 			});
 		}
 		// Otherwise, the change is already applied and we're done
+		// Reset completion flag when player makes a change
+		completionCalled = false;
 	}
 
 	// Reset everything
@@ -184,6 +197,8 @@
 			const original = config.transforms[i];
 			Object.assign(transform, { ...original });
 		});
+		// Reset completion flag when player resets
+		completionCalled = false;
 	}
 </script>
 

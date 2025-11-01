@@ -7,7 +7,7 @@
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import type { BooleanGatesConfig } from './types';
 
-	let { config, children }: { config: BooleanGatesConfig; children?: any } = $props();
+	let { config, oncomplete, children }: { config: BooleanGatesConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
 
 	// Initialize all levers OFF
 	const allLevers = $state(new Array(config.maxLevers).fill(false));
@@ -21,6 +21,9 @@
 	// Count how many levers are currently ON
 	const activeCount = $derived(allLevers.filter(Boolean).length);
 	const canToggleOn = $derived(activeCount < config.maxActiveLevers);
+
+	// Track if completion has been called to avoid multiple calls
+	let completionCalled = $state(false);
 
 	// Get color for a lever (returns color if active, or null if dummy)
 	const getLeverColor = (leverIndex: number) => {
@@ -36,7 +39,17 @@
 			return;
 		}
 		allLevers[i] = newValue;
+		// Reset completion flag when player makes a change
+		completionCalled = false;
 	}
+
+	// Call oncomplete when all outputs are TRUE
+	$effect(() => {
+		if (outputs.every(Boolean) && !completionCalled && oncomplete) {
+			completionCalled = true;
+			oncomplete('success');
+		}
+	});
 </script>
 
 <Column gap="var(--space-6)">

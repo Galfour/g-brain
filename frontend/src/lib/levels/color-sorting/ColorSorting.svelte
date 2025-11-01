@@ -8,7 +8,7 @@
 	import type { ColorSortingConfig, RGB } from './types';
 	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
 
-	let { config, children }: { config: ColorSortingConfig; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
 
 	// Determine if this is an easy level (numColors <= 10)
 	const isEasyLevel = config.numColors <= 10;
@@ -31,12 +31,25 @@
 	// Check if sorted correctly
 	const isCorrect = $derived(isSorted(userOrder, config.property, correctInputOrder));
 
+	// Track if completion has been called to avoid multiple calls
+	let completionCalled = $state(false);
+
 	function swap(index: number) {
 		if (index >= userOrder.length - 1) return;
 		const temp = userOrder[index];
 		userOrder[index] = userOrder[index + 1];
 		userOrder[index + 1] = temp;
+		// Reset completion flag when player makes a change
+		completionCalled = false;
 	}
+
+	// Call oncomplete when sorted correctly
+	$effect(() => {
+		if (isCorrect && !completionCalled && oncomplete) {
+			completionCalled = true;
+			oncomplete('success');
+		}
+	});
 
 	// Create interleaved array of colors and swap buttons
 	const items = $derived(

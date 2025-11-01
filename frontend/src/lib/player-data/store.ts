@@ -275,3 +275,45 @@ export function clearPlayerData(playerName?: string): void {
 	}
 }
 
+/**
+ * Get the validation progress for a level (number of consecutive successes).
+ * Returns a number from 0 to 3 representing how many consecutive successes
+ * there are from the most recent completion.
+ */
+export function getValidationProgress(levelId: string, playerName?: string): number {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) return 0;
+	
+	const data = getPlayerData(name);
+	
+	// Get all completions for this level, sorted by completion time (most recent first)
+	const levelCompletions = data.levelCompletions
+		.filter(c => c.levelId === levelId)
+		.sort((a, b) => b.completionTime - a.completionTime);
+	
+	if (levelCompletions.length === 0) {
+		return 0;
+	}
+	
+	// Count consecutive successes from the most recent
+	let count = 0;
+	for (const completion of levelCompletions) {
+		if (completion.status === 'success') {
+			count++;
+			if (count >= 3) break; // No need to count beyond 3
+		} else {
+			break; // Failure breaks the streak
+		}
+	}
+	
+	return count;
+}
+
+/**
+ * Check if a level is validated (succeeded 3 times in a row).
+ * Looks at the most recent completions for the level and checks if the last 3 are all successes.
+ */
+export function isLevelValidated(levelId: string, playerName?: string): boolean {
+	return getValidationProgress(levelId, playerName) >= 3;
+}
+
