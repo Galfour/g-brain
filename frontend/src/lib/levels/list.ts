@@ -1,5 +1,6 @@
 import { getLevelConfig } from './boolean-gates/config';
 import { getLevelConfig as getColorSortingConfig } from './color-sorting/config';
+import { getLevelConfig as getControlZoneConfig } from './control-zone/config';
 
 export type LevelMeta = {
     id: string;
@@ -51,6 +52,24 @@ function getColorSortingLevels(): LevelMeta[] {
     });
 }
 
+// Generate control zone levels from config
+function getControlZoneLevels(): LevelMeta[] {
+    const levelIds = Array.from({ length: 4 }, (_, i) => `control-zone-${i + 1}`);
+    return levelIds.map(id => {
+        const config = getControlZoneConfig(id);
+        if (!config) {
+            throw new Error(`Missing config for level: ${id}`);
+        }
+        return {
+            id,
+            title: config.title,
+            description: config.subtitle,
+            tags: ['control', 'navigation', 'spatial'],
+            section: 'control-zone'
+        };
+    });
+}
+
 export const sections: LevelSection[] = [
     {
         id: 'boolean-gates',
@@ -61,6 +80,11 @@ export const sections: LevelSection[] = [
         id: 'color-sorting',
         title: 'Color Sorting',
         levels: getColorSortingLevels()
+    },
+    {
+        id: 'control-zone',
+        title: 'Control Zone',
+        levels: getControlZoneLevels()
     }
 ];
 

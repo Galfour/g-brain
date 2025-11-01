@@ -9,21 +9,32 @@
 	import ColorSorting from '$lib/levels/color-sorting/ColorSorting.svelte';
 	import { getLevelConfig as getColorSortingConfig } from '$lib/levels/color-sorting/config';
 	import type { ColorSortingConfig } from '$lib/levels/color-sorting/types';
+	import ControlZone from '$lib/levels/control-zone/ControlZone.svelte';
+	import { getLevelConfig as getControlZoneConfig } from '$lib/levels/control-zone/config';
+	import type { ControlZoneConfig } from '$lib/levels/control-zone/types';
 
 	let booleanGatesConfig: BooleanGatesConfig | null = $state(null);
 	let colorSortingConfig: ColorSortingConfig | null = $state(null);
+	let controlZoneConfig: ControlZoneConfig | null = $state(null);
 
 	$effect(() => {
 		const id = $page.url.searchParams.get('level');
 		if (id?.startsWith('boolean-gates-')) {
 			booleanGatesConfig = getBooleanGatesConfig(id);
 			colorSortingConfig = null;
+			controlZoneConfig = null;
 		} else if (id?.startsWith('color-sorting-')) {
 			colorSortingConfig = getColorSortingConfig(id);
 			booleanGatesConfig = null;
+			controlZoneConfig = null;
+		} else if (id?.startsWith('control-zone-')) {
+			controlZoneConfig = getControlZoneConfig(id);
+			booleanGatesConfig = null;
+			colorSortingConfig = null;
 		} else {
 			booleanGatesConfig = null;
 			colorSortingConfig = null;
+			controlZoneConfig = null;
 		}
 	});
 </script>
@@ -33,6 +44,8 @@
 		<BooleanGates config={booleanGatesConfig} />
 	{:else if colorSortingConfig}
 		<ColorSorting config={colorSortingConfig} />
+	{:else if controlZoneConfig}
+		<ControlZone config={controlZoneConfig} />
 	{:else}
 		<Column gap="var(--space-3)">
 			<Title>No level selected</Title>
