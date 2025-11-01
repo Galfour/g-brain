@@ -12,13 +12,27 @@
 	import ControlZone from '$lib/levels/control-zone/ControlZone.svelte';
 	import { getLevelConfig as getControlZoneConfig } from '$lib/levels/control-zone/config';
 	import type { ControlZoneConfig } from '$lib/levels/control-zone/types';
+	import { trackLevelStart, getCurrentPlayer, createNewPlayer } from '$lib/player-data';
 
 	let booleanGatesConfig: BooleanGatesConfig | null = $state(null);
 	let colorSortingConfig: ColorSortingConfig | null = $state(null);
 	let controlZoneConfig: ControlZoneConfig | null = $state(null);
+	let currentLevelId = $state<string | null>(null);
 
 	$effect(() => {
 		const id = $page.url.searchParams.get('level');
+		
+		// Ensure we have a current player before tracking
+		if (id && !getCurrentPlayer()) {
+			createNewPlayer();
+		}
+		
+		// Track level start only when level changes
+		if (id && id !== currentLevelId) {
+			currentLevelId = id;
+			trackLevelStart(id);
+		}
+		
 		if (id?.startsWith('boolean-gates-')) {
 			booleanGatesConfig = getBooleanGatesConfig(id);
 			colorSortingConfig = null;
@@ -35,6 +49,7 @@
 			booleanGatesConfig = null;
 			colorSortingConfig = null;
 			controlZoneConfig = null;
+			currentLevelId = null;
 		}
 	});
 </script>

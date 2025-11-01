@@ -10,3 +10,6 @@ export { default as Subtitle } from './component/Subtitle.svelte';
 
 // Levels
 export * from './levels';
+
+// Player Data
+export * from './player-data';

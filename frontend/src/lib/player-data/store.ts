@@ -1,0 +1,277 @@
+import type { PlayerData, LevelStart, LevelCompletion, LevelCompletionStatus } from './types';
+
+const CURRENT_PLAYER_KEY = 'g-brain-current-player';
+const PLAYER_DATA_PREFIX = 'g-brain-player-data-';
+
+function getStorageKey(playerName: string): string {
+	return `${PLAYER_DATA_PREFIX}${playerName}`;
+}
+
+function getDefaultPlayerData(playerName: string): PlayerData {
+	return {
+		userName: playerName,
+		levelStarts: [],
+		levelCompletions: []
+	};
+}
+
+function loadPlayerData(playerName: string): PlayerData {
+	if (typeof window === 'undefined') {
+		return getDefaultPlayerData(playerName);
+	}
+
+	try {
+		const stored = localStorage.getItem(getStorageKey(playerName));
+		if (!stored) {
+			return getDefaultPlayerData(playerName);
+		}
+		return JSON.parse(stored);
+	} catch (error) {
+		console.error('Failed to load player data:', error);
+		return getDefaultPlayerData(playerName);
+	}
+}
+
+function savePlayerData(playerName: string, data: PlayerData): void {
+	if (typeof window === 'undefined') {
+		return;
+	}
+
+	try {
+		localStorage.setItem(getStorageKey(playerName), JSON.stringify(data));
+	} catch (error) {
+		console.error('Failed to save player data:', error);
+	}
+}
+
+function getCurrentPlayerName(): string {
+	if (typeof window === 'undefined') {
+		return '';
+	}
+	const current = localStorage.getItem(CURRENT_PLAYER_KEY);
+	return current || '';
+}
+
+function setCurrentPlayerName(name: string): void {
+	if (typeof window === 'undefined') {
+		return;
+	}
+	localStorage.setItem(CURRENT_PLAYER_KEY, name);
+}
+
+let playerDataCache: { name: string; data: PlayerData } | null = null;
+
+export function getCurrentPlayer(): string {
+	return getCurrentPlayerName();
+}
+
+export function getPlayerData(playerName?: string): PlayerData {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) {
+		return { userName: '', levelStarts: [], levelCompletions: [] };
+	}
+	
+	if (playerDataCache && playerDataCache.name === name) {
+		return playerDataCache.data;
+	}
+	
+	const data = loadPlayerData(name);
+	playerDataCache = { name, data };
+	return data;
+}
+
+export function savePlayerDataToStorage(): void {
+	if (playerDataCache) {
+		savePlayerData(playerDataCache.name, playerDataCache.data);
+	}
+}
+
+export function getAllPlayerNames(): string[] {
+	if (typeof window === 'undefined') {
+		return [];
+	}
+	
+	const names: string[] = [];
+	for (let i = 0; i < localStorage.length; i++) {
+		const key = localStorage.key(i);
+		if (key?.startsWith(PLAYER_DATA_PREFIX)) {
+			const playerName = key.slice(PLAYER_DATA_PREFIX.length);
+			if (playerName) {
+				names.push(playerName);
+			}
+		}
+	}
+	return names.sort();
+}
+
+export function createNewPlayer(name?: string): string {
+	const playerName = name || generateRandomName();
+	const data = getDefaultPlayerData(playerName);
+	savePlayerData(playerName, data);
+	setCurrentPlayerName(playerName);
+	playerDataCache = { name: playerName, data };
+	return playerName;
+}
+
+export function switchPlayer(playerName: string): void {
+	if (!playerName) return;
+	const data = loadPlayerData(playerName);
+	setCurrentPlayerName(playerName);
+	playerDataCache = { name: playerName, data };
+}
+
+export function renamePlayer(oldName: string, newName: string): void {
+	if (!oldName || !newName || oldName === newName) return;
+	
+	// Load old data
+	const data = loadPlayerData(oldName);
+	data.userName = newName;
+	
+	// Save with new key
+	savePlayerData(newName, data);
+	
+	// Delete old key
+	if (typeof window !== 'undefined') {
+		localStorage.removeItem(getStorageKey(oldName));
+	}
+	
+	// Update current player if it was the active one
+	if (getCurrentPlayerName() === oldName) {
+		setCurrentPlayerName(newName);
+	}
+	
+	playerDataCache = { name: newName, data };
+}
+
+export function deletePlayer(playerName: string): void {
+	if (typeof window === 'undefined') {
+		return;
+	}
+	
+	localStorage.removeItem(getStorageKey(playerName));
+	
+	// If this was the current player, clear current player
+	if (getCurrentPlayerName() === playerName) {
+		localStorage.removeItem(CURRENT_PLAYER_KEY);
+		playerDataCache = null;
+	} else if (playerDataCache?.name === playerName) {
+		playerDataCache = null;
+	}
+}
+
+function generateRandomName(): string {
+	const adjectives = [
+		'Swift', 'Bold', 'Clever', 'Mighty', 'Brave', 'Wise', 'Bright', 'Quick',
+		'Sharp', 'Noble', 'Calm', 'Fierce', 'Gentle', 'Steady', 'Silent', 'Swift',
+		'Wild', 'Tame', 'Ancient', 'Young', 'Golden', 'Silver', 'Red', 'Blue'
+	];
+	const nouns = [
+		'Wolf', 'Eagle', 'Lion', 'Tiger', 'Bear', 'Fox', 'Hawk', 'Raven',
+		'Phoenix', 'Dragon', 'Falcon', 'Panther', 'Jaguar', 'Lynx', 'Owl', 'Stag',
+		'Warrior', 'Hunter', 'Scout', 'Guardian', 'Explorer', 'Sage', 'Mage', 'Ranger'
+	];
+	
+	let name: string;
+	let attempts = 0;
+	
+	do {
+		const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+		const noun = nouns[Math.floor(Math.random() * nouns.length)];
+		name = `${adj} ${noun}`;
+		attempts++;
+	} while (getAllPlayerNames().includes(name) && attempts < 10);
+	
+	return name;
+}
+
+export function trackLevelStart(levelId: string, playerName?: string): void {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) return;
+	
+	const data = getPlayerData(name);
+	const startTime = Date.now();
+	
+	// Prevent duplicate starts within 2 seconds (handles rapid re-renders or duplicate calls)
+	const recentStart = data.levelStarts.find(
+		start => start.levelId === levelId && Math.abs(startTime - start.startTime) < 2000
+	);
+	
+	// Only add a new start if there isn't a very recent one
+	if (!recentStart) {
+		data.levelStarts.push({
+			levelId,
+			startTime
+		});
+		if (playerDataCache && playerDataCache.name === name) {
+			playerDataCache.data = data;
+		} else {
+			playerDataCache = { name, data };
+		}
+		savePlayerData(name, data);
+	}
+}
+
+export function trackLevelCompletion(levelId: string, status: LevelCompletionStatus, playerName?: string): void {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) return;
+	
+	const data = getPlayerData(name);
+	const completionTime = Date.now();
+	
+	// Find the most recent start for this level that hasn't been completed yet
+	const start = data.levelStarts
+		.filter(s => s.levelId === levelId)
+		.sort((a, b) => b.startTime - a.startTime)
+		.find(s => {
+			// Check if this start already has a completion
+			return !data.levelCompletions.some(
+				c => c.levelId === levelId && 
+				c.completionTime >= s.startTime &&
+				c.timeSpent === (c.completionTime - s.startTime)
+			);
+		});
+	
+	const timeSpent = start ? completionTime - start.startTime : 0;
+	
+	data.levelCompletions.push({
+		levelId,
+		status,
+		completionTime,
+		timeSpent
+	});
+	
+	if (playerDataCache && playerDataCache.name === name) {
+		playerDataCache.data = data;
+	} else {
+		playerDataCache = { name, data };
+	}
+	savePlayerData(name, data);
+}
+
+export function getLevelStarts(levelId?: string, playerName?: string): LevelStart[] {
+	const data = getPlayerData(playerName);
+	if (levelId) {
+		return data.levelStarts.filter(start => start.levelId === levelId);
+	}
+	return data.levelStarts;
+}
+
+export function getLevelCompletions(levelId?: string, playerName?: string): LevelCompletion[] {
+	const data = getPlayerData(playerName);
+	if (levelId) {
+		return data.levelCompletions.filter(completion => completion.levelId === levelId);
+	}
+	return data.levelCompletions;
+}
+
+export function clearPlayerData(playerName?: string): void {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) return;
+	
+	const data = getDefaultPlayerData(name);
+	savePlayerData(name, data);
+	if (playerDataCache && playerDataCache.name === name) {
+		playerDataCache.data = data;
+	}
+}
+

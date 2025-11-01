@@ -14,6 +14,7 @@
 		<div class="nav__links">
 			<a href="/">Home</a>
 			<a href="/levels/list">Levels</a>
+			<a href="/stats">Stats</a>
 		</div>
 	</div>
 </nav>
