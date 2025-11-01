@@ -124,26 +124,79 @@ function generateRandomColors(numColors: number): RGB[] {
 	return colors;
 }
 
+// Helper to generate non-equidistant values covering the full range
+function generateNonEquidistantValues(numValues: number, min: number, max: number): number[] {
+	// Generate random values but ensure they cover the range (include min and max)
+	const values = [min, max];
+	while (values.length < numValues) {
+		const random = Math.floor(Math.random() * (max - min + 1)) + min;
+		if (!values.includes(random)) {
+			values.push(random);
+		}
+	}
+	return values.sort((a, b) => a - b);
+}
+
 function generateMixedColorsByRedness(numColors: number): RGB[] {
 	const colors: RGB[] = [];
+	// Fix green axis (could also fix blue, saturation, or brightness)
+	const fixedG = Math.floor(Math.random() * 256);
+	
+	// Generate non-equidistant redness values
+	const rValues = generateNonEquidistantValues(numColors, 0, 255);
+	
 	for (let i = 0; i < numColors; i++) {
-		const r = Math.floor((i / (numColors - 1)) * 255);
-		const g = Math.floor(100 + Math.random() * 50); // Some variation
-		const b = Math.floor(100 + Math.random() * 50); // Some variation
-		colors.push({ r, g, b });
+		const r = rValues[i];
+		const b = Math.floor(Math.random() * 256); // Vary blue
+		colors.push({ r, g: fixedG, b });
 	}
 	return colors.sort(() => Math.random() - 0.5);
 }
 
-// Hard HSB levels - vary 2 axes (1 fixed)
+function generateMixedColorsByGreenness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
+	// Fix red axis
+	const fixedR = Math.floor(Math.random() * 256);
+	
+	// Generate non-equidistant greenness values
+	const gValues = generateNonEquidistantValues(numColors, 0, 255);
+	
+	for (let i = 0; i < numColors; i++) {
+		const g = gValues[i];
+		const b = Math.floor(Math.random() * 256); // Vary blue
+		colors.push({ r: fixedR, g, b });
+	}
+	return colors.sort(() => Math.random() - 0.5);
+}
+
+function generateMixedColorsByBlueness(numColors: number): RGB[] {
+	const colors: RGB[] = [];
+	// Fix red axis
+	const fixedR = Math.floor(Math.random() * 256);
+	
+	// Generate non-equidistant blueness values
+	const bValues = generateNonEquidistantValues(numColors, 0, 255);
+	
+	for (let i = 0; i < numColors; i++) {
+		const b = bValues[i];
+		const g = Math.floor(Math.random() * 256); // Vary green
+		colors.push({ r: fixedR, g, b });
+	}
+	return colors.sort(() => Math.random() - 0.5);
+}
+
+// Hard HSB levels - vary 2 axes (1 fixed), non-equidistant on varying axis
 function generateMixedColorsByHue(numColors: number): RGB[] {
 	const colors: RGB[] = [];
-	const step = 360 / numColors;
 	// Keep saturation fixed, vary hue and brightness
 	const s = 50 + Math.floor(Math.random() * 40); // Fixed saturation between 50-90
+	
+	// Generate non-equidistant hue values (circular, so handle wrap-around)
+	const hValues = generateNonEquidistantValues(numColors, 0, 359);
+	
 	for (let i = 0; i < numColors; i++) {
-		const h = (i * step) % 360;
-		const v = 50 + Math.random() * 40; // Vary brightness between 50-90
+		const h = hValues[i];
+		const v = 50 + Math.floor(Math.random() * 40); // Vary brightness between 50-90
 		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
@@ -152,12 +205,15 @@ function generateMixedColorsByHue(numColors: number): RGB[] {
 
 function generateMixedColorsBySaturation(numColors: number): RGB[] {
 	const colors: RGB[] = [];
-	const step = 100 / (numColors - 1);
 	// Keep hue fixed, vary saturation and brightness
 	const h = Math.floor(Math.random() * 360); // Fixed hue
+	
+	// Generate non-equidistant saturation values
+	const sValues = generateNonEquidistantValues(numColors, 0, 100);
+	
 	for (let i = 0; i < numColors; i++) {
-		const s = Math.min(i * step, 100);
-		const v = 50 + Math.random() * 40; // Vary brightness between 50-90
+		const s = sValues[i];
+		const v = 50 + Math.floor(Math.random() * 40); // Vary brightness between 50-90
 		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}
@@ -166,12 +222,15 @@ function generateMixedColorsBySaturation(numColors: number): RGB[] {
 
 function generateMixedColorsByBrightness(numColors: number): RGB[] {
 	const colors: RGB[] = [];
-	const step = 100 / (numColors - 1);
 	// Keep hue fixed, vary saturation and brightness
 	const h = Math.floor(Math.random() * 360); // Fixed hue
+	
+	// Generate non-equidistant brightness values
+	const vValues = generateNonEquidistantValues(numColors, 0, 100);
+	
 	for (let i = 0; i < numColors; i++) {
-		const v = Math.min(i * step, 100);
-		const s = 50 + Math.random() * 40; // Vary saturation between 50-90
+		const v = vValues[i];
+		const s = 50 + Math.floor(Math.random() * 40); // Vary saturation between 50-90
 		const color = hsvToRgb(h, s, v);
 		colors.push(color);
 	}

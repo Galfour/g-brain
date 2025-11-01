@@ -1,0 +1,5 @@
+- [] control dot to target zone
+- [] estimate relative size
+- [] add/multiply
+- [] some french lesson
+- [] integration with rememboo or anki

@@ -38,6 +38,19 @@
 		userOrder[index + 1] = temp;
 	}
 
+	// Create interleaved array of colors and swap buttons
+	const items = $derived(
+		userOrder.flatMap((color, index) => {
+			const items: Array<{ type: 'color'; content: RGB } | { type: 'swap'; content: number }> = [
+				{ type: 'color', content: color }
+			];
+			if (index < userOrder.length - 1) {
+				items.push({ type: 'swap', content: index });
+			}
+			return items;
+		})
+	);
+
 </script>
 
 <Column gap="var(--space-6)">
@@ -68,26 +81,27 @@
 			<Column gap="var(--space-4)">
 				<div class="subtitle">Your Order {#if isCorrect}<span style="color: var(--color-primary);">✓ Correct!</span>{/if}</div>
 				<div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);">
-					{#each userOrder as color, colorIndex}
-						{@const colorKey = `${color.r},${color.g},${color.b}`}
-						{#each [color] as c (colorKey)}
-							<div
-								animate:flip={{ duration: 300 }}
-								style="width: 48px; height: 48px; background: {rgbToCss(c)}; border-radius: var(--radius-sm); border: 1px solid var(--color-border); order: {colorIndex * 2};"
-							></div>
-						{/each}
-					{/each}
-					{#each Array(userOrder.length - 1) as _, i}
-						<button
-							class="btn btn--ghost"
-							onclick={() => swap(i)}
-							aria-label="Swap colors"
-							style="padding: var(--space-1); min-width: 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; order: {(i + 1) * 2 - 1};"
+					{#each items as item (item.content)}
+						<div
+							animate:flip={{ duration: 300 }}
 						>
-							<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-								<path d="M6 4L2 8L6 12M10 4L14 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-							</svg>
-						</button>
+							{#if item.type === 'color'}
+								<div
+									style="width: 48px; height: 48px; background: {rgbToCss(item.content)}; border-radius: var(--radius-sm); border: 1px solid var(--color-border);"
+								></div>
+							{:else}
+								<button
+									class="btn btn--ghost"
+									onclick={() => swap(item.content)}
+									aria-label="Swap colors"
+									style="padding: var(--space-1); min-width: 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;"
+								>
+									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path d="M6 4L2 8L6 12M10 4L14 8L10 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+									</svg>
+								</button>
+							{/if}
+						</div>
 					{/each}
 				</div>
 				<div style="font-size: 12px; color: var(--color-muted);">
