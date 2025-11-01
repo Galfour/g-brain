@@ -20,12 +20,12 @@
 		config.transforms.map(t => ({ ...t }))
 	);
 
-	// Apply all transforms in sequence to compute final player position
-	const finalPlayerPos = $derived.by(() => {
+	// Calculate player position without clamping (for collision detection)
+	function calculatePlayerPos(transforms: Transform[]): { x: number; y: number } {
 		let x = playerState.x;
 		let y = playerState.y;
 
-		for (const transform of transformStates) {
+		for (const transform of transforms) {
 			switch (transform.type) {
 				case 'translation': {
 					// Convert direction (degrees) and distance to dx/dy
@@ -63,9 +63,16 @@
 			}
 		}
 
+		return { x, y };
+	}
+
+	// Apply all transforms in sequence to compute final player position
+	const finalPlayerPos = $derived.by(() => {
+		const pos = calculatePlayerPos(transformStates);
+
 		// Clamp to bounds (0-600)
-		x = Math.max(0, Math.min(600, x));
-		y = Math.max(0, Math.min(600, y));
+		const x = Math.max(0, Math.min(600, pos.x));
+		const y = Math.max(0, Math.min(600, pos.y));
 
 		return { x, y };
 	});
@@ -78,6 +85,33 @@
 		finalPlayerPos.y <= config.targetZone.y + config.targetZone.height / 2
 	);
 
+	// Check if a position is out of bounds or in an obstacle
+	function isPositionInvalid(pos: { x: number; y: number }): boolean {
+		// Check out of bounds (0-600)
+		if (pos.x < 0 || pos.x > 600 || pos.y < 0 || pos.y > 600) {
+			return true;
+		}
+
+		// Check collision with obstacles
+		for (const obstacle of config.obstacles) {
+			const obstacleLeft = obstacle.x;
+			const obstacleRight = obstacle.x + obstacle.width;
+			const obstacleTop = obstacle.y;
+			const obstacleBottom = obstacle.y + obstacle.height;
+
+			if (
+				pos.x >= obstacleLeft &&
+				pos.x <= obstacleRight &&
+				pos.y >= obstacleTop &&
+				pos.y <= obstacleBottom
+			) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	// Handle button click: modify transform property
 	function handleButtonClick(buttonId: string) {
 		const button = config.buttons.find(b => b.id === buttonId);
@@ -89,6 +123,10 @@
 		// Get current value
 		const currentValue = (transform as any)[button.property];
 		if (currentValue === undefined) return;
+
+		// Save entire state
+		const savedPlayerState = { x: playerState.x, y: playerState.y };
+		const savedTransformStates = transformStates.map(t => ({ ...t }));
 
 		// Calculate new value
 		let newValue = currentValue + button.increment;
@@ -120,8 +158,22 @@
 			}
 		}
 
-		// Update transform property
+		// Apply the change
 		(transform as any)[button.property] = newValue;
+
+		// Calculate new player position (without clamping)
+		const newPos = calculatePlayerPos(transformStates);
+
+		// Check if position is invalid (out of bounds or in obstacle)
+		if (isPositionInvalid(newPos)) {
+			// Reload saved state
+			playerState.x = savedPlayerState.x;
+			playerState.y = savedPlayerState.y;
+			transformStates.forEach((t, i) => {
+				Object.assign(t, savedTransformStates[i]);
+			});
+		}
+		// Otherwise, the change is already applied and we're done
 	}
 
 	// Reset everything
