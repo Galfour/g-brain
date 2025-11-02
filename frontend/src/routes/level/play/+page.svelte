@@ -19,6 +19,9 @@
 	import FormalWords from '$lib/levels/formal-words/FormalWords.svelte';
 	import { getLevelConfig as getFormalWordsConfig } from '$lib/levels/formal-words/config';
 	import type { FormalWordsConfig } from '$lib/levels/formal-words/types';
+	import Lesson from '$lib/levels/lesson/Lesson.svelte';
+	import { getLessonConfig } from '$lib/levels/lesson/config';
+	import type { LessonConfig } from '$lib/levels/lesson/types';
 	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress, getRequiredCompletionsForLevel } from '$lib/player-data';
 	import { levels } from '$lib/levels';
 
@@ -50,7 +53,8 @@
 
 	let currentLevelId = $state<string | null>(null);
 	let currentConfig = $state<LevelConfig | null>(null);
-	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | null>(null);
+	let currentLessonConfig = $state<LessonConfig | null>(null);
+	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | 'lesson' | null>(null);
 	let completionModalOpen = $state(false);
 	let completionStatus: 'success' | 'failure' | null = $state(null);
 	let validationProgress = $state(0);
@@ -67,34 +71,52 @@
 		return levelRegistry.find(registry => levelId.startsWith(registry.prefix)) ?? null;
 	}
 
+	// Track the URL level parameter to detect changes
+	const urlLevelId = $derived($page.url.searchParams.get('level'));
+	
+	// Use a non-reactive variable to track previous level ID and avoid infinite loops
+	let previousLevelId: string | null = null;
+	
 	$effect(() => {
-		const id = $page.url.searchParams.get('level');
+		const id = urlLevelId;
 		
 		if (id && !getCurrentPlayer()) {
 			createNewPlayer();
 		}
 		
-		if (id && id !== currentLevelId) {
-			currentLevelId = id;
-			trackLevelStart(id);
-			requiredCompletions = getRequiredCompletionsForLevel(id);
-			resetModalState();
-			levelKey = 0;
-		}
-		
-		if (id) {
-			const registry = findLevelRegistry(id);
-			if (registry) {
-				currentConfig = registry.getConfig(id);
-				currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words';
+		// Only update when the level ID actually changes (using non-reactive previousLevelId)
+		if (id !== previousLevelId) {
+			previousLevelId = id;
+			
+			if (id) {
+				currentLevelId = id;
+				trackLevelStart(id);
+				requiredCompletions = getRequiredCompletionsForLevel(id);
+				resetModalState();
+				levelKey = 0;
+				
+				if (id.startsWith('lesson-')) {
+					currentLessonConfig = getLessonConfig(id);
+					currentLevelType = currentLessonConfig ? 'lesson' : null;
+					currentConfig = null;
+				} else {
+					const registry = findLevelRegistry(id);
+					if (registry) {
+						currentConfig = registry.getConfig(id);
+						currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words';
+						currentLessonConfig = null;
+					} else {
+						currentConfig = null;
+						currentLevelType = null;
+						currentLessonConfig = null;
+					}
+				}
 			} else {
+				currentLevelId = null;
 				currentConfig = null;
+				currentLessonConfig = null;
 				currentLevelType = null;
 			}
-		} else {
-			currentLevelId = null;
-			currentConfig = null;
-			currentLevelType = null;
 		}
 	});
 
@@ -149,7 +171,11 @@
 </script>
 
 <Column gap="var(--space-6)">
-	{#if currentLevelType === 'boolean-gates' && currentConfig}
+	{#if currentLevelType === 'lesson' && currentLessonConfig}
+		{#key levelKey}
+			<Lesson config={currentLessonConfig} oncomplete={handleComplete} />
+		{/key}
+	{:else if currentLevelType === 'boolean-gates' && currentConfig}
 		{#key levelKey}
 			<BooleanGates config={currentConfig as BooleanGatesConfig} oncomplete={handleComplete} />
 		{/key}

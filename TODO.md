@@ -3,7 +3,7 @@
 - [X] game completion: failure, success, reroll
 - [X] separate regeneratable from one-off levels
 - [X] refactor play/svelte
-- [] lessons before each exercise with new concept
+- [X] lessons before each exercise with new concept
 - [] level tree (with validation)
 - [] internationalisation
 - [] integration with rememboo or anki
@@ -19,6 +19,8 @@
 - [] some french lesson
 
 # existing levels
+- [] improve lessons for all level types
+
 boolean-gates:
 - [] fixed size for cards
 control-zone:

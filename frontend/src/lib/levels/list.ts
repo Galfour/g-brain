@@ -2,6 +2,7 @@ import { getLevelConfig } from './boolean-gates/config';
 import { getLevelConfig as getColorSortingConfig } from './color-sorting/config';
 import { getLevelConfig as getControlZoneConfig } from './control-zone/config';
 import { getLevelConfig as getFormalWordsConfig } from './formal-words/config';
+import { getLessonConfig } from './lesson/config';
 
 export type LevelMeta = {
     id: string;
@@ -99,26 +100,55 @@ function getFormalWordsLevels(): LevelMeta[] {
     });
 }
 
+function createLessonMeta(sectionId: string): LevelMeta | null {
+    const lessonId = `lesson-${sectionId}`;
+    const lessonConfig = getLessonConfig(lessonId);
+    if (!lessonConfig) {
+        return null;
+    }
+    return {
+        id: lessonId,
+        title: lessonConfig.title,
+        description: 'Introduction lesson for this section',
+        tags: ['lesson', 'introduction'],
+        section: sectionId,
+        source: 'fixed',
+        requiredCompletions: 1
+    };
+}
+
 export const sections: LevelSection[] = [
     {
         id: 'boolean-gates',
         title: 'Boolean Gates',
-        levels: getBooleanGatesLevels()
+        levels: (() => {
+            const lesson = createLessonMeta('boolean-gates');
+            return lesson ? [lesson, ...getBooleanGatesLevels()] : getBooleanGatesLevels();
+        })()
     },
     {
         id: 'color-sorting',
         title: 'Color Sorting',
-        levels: getColorSortingLevels()
+        levels: (() => {
+            const lesson = createLessonMeta('color-sorting');
+            return lesson ? [lesson, ...getColorSortingLevels()] : getColorSortingLevels();
+        })()
     },
     {
         id: 'control-zone',
         title: 'Control Zone',
-        levels: getControlZoneLevels()
+        levels: (() => {
+            const lesson = createLessonMeta('control-zone');
+            return lesson ? [lesson, ...getControlZoneLevels()] : getControlZoneLevels();
+        })()
     },
     {
         id: 'formal-words',
         title: 'Formal Words',
-        levels: getFormalWordsLevels()
+        levels: (() => {
+            const lesson = createLessonMeta('formal-words');
+            return lesson ? [lesson, ...getFormalWordsLevels()] : getFormalWordsLevels();
+        })()
     }
 ];
 
