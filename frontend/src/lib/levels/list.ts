@@ -3,6 +3,7 @@ import { getLevelConfig as getColorSortingConfig } from './color-sorting/config'
 import { getLevelConfig as getControlZoneConfig } from './control-zone/config';
 import { getLevelConfig as getFormalWordsConfig } from './formal-words/config';
 import { getLessonConfig } from './lesson/config';
+import { m } from '$lib/paraglide/messages.js';
 
 export type LevelMeta = {
     id: string;
@@ -130,67 +131,74 @@ function createLessonItem(folderId: string): LevelItem | null {
         type: 'level' as const,
         id: lessonId,
         title: lessonConfig.title,
-        description: 'Introduction lesson for this section',
+        description: m.lesson_intro_description(),
         tags: ['lesson', 'introduction'],
         source: 'fixed',
         requiredCompletions: 1
     };
 }
 
-// Root tree structure
-export const root: LevelFolder = {
-    type: 'folder',
-    id: 'root',
-    title: 'Root',
-    children: [
-        // color-sorting at root
-        {
-            type: 'folder',
-            id: 'color-sorting',
-            title: 'Color Sorting',
-            children: (() => {
-                const lesson = createLessonItem('color-sorting');
-                return lesson ? [lesson, ...getColorSortingLevels()] : getColorSortingLevels();
-            })()
-        },
-        // control-zone at root
-        {
-            type: 'folder',
-            id: 'control-zone',
-            title: 'Control Zone',
-            children: (() => {
-                const lesson = createLessonItem('control-zone');
-                return lesson ? [lesson, ...getControlZoneLevels()] : getControlZoneLevels();
-            })()
-        },
-        // formalism section containing boolean-gates and formal-words
-        {
-            type: 'folder',
-            id: 'formalism',
-            title: 'Formalism',
-            children: [
-                {
-                    type: 'folder',
-                    id: 'boolean-gates',
-                    title: 'Boolean Gates',
-                    children: (() => {
-                        const lesson = createLessonItem('boolean-gates');
-                        return lesson ? [lesson, ...getBooleanGatesLevels()] : getBooleanGatesLevels();
-                    })()
-                },
-                {
-                    type: 'folder',
-                    id: 'formal-words',
-                    title: 'Formal Words',
-                    children: (() => {
-                        const lesson = createLessonItem('formal-words');
-                        return lesson ? [lesson, ...getFormalWordsLevels()] : getFormalWordsLevels();
-                    })()
-                }
-            ]
-        }
-    ]
-};
+// Root tree structure - Note: This needs to be a function to access messages at runtime
+// But since it's exported as const, we'll need to make it reactive or use a getter
+// For now, we'll create a function that returns the root structure
+function getRoot(): LevelFolder {
+    return {
+        type: 'folder',
+        id: 'root',
+        title: m.levels_root(),
+        children: [
+            // color-sorting at root
+            {
+                type: 'folder',
+                id: 'color-sorting',
+                title: m.folder_color_sorting(),
+                children: (() => {
+                    const lesson = createLessonItem('color-sorting');
+                    return lesson ? [lesson, ...getColorSortingLevels()] : getColorSortingLevels();
+                })()
+            },
+            // control-zone at root
+            {
+                type: 'folder',
+                id: 'control-zone',
+                title: m.folder_control_zone(),
+                children: (() => {
+                    const lesson = createLessonItem('control-zone');
+                    return lesson ? [lesson, ...getControlZoneLevels()] : getControlZoneLevels();
+                })()
+            },
+            // formalism section containing boolean-gates and formal-words
+            {
+                type: 'folder',
+                id: 'formalism',
+                title: m.folder_formalism(),
+                children: [
+                    {
+                        type: 'folder',
+                        id: 'boolean-gates',
+                        title: m.folder_boolean_gates(),
+                        children: (() => {
+                            const lesson = createLessonItem('boolean-gates');
+                            return lesson ? [lesson, ...getBooleanGatesLevels()] : getBooleanGatesLevels();
+                        })()
+                    },
+                    {
+                        type: 'folder',
+                        id: 'formal-words',
+                        title: m.folder_formal_words(),
+                        children: (() => {
+                            const lesson = createLessonItem('formal-words');
+                            return lesson ? [lesson, ...getFormalWordsLevels()] : getFormalWordsLevels();
+                        })()
+                    }
+                ]
+            }
+        ]
+    };
+}
+
+// Export as a getter to ensure messages are accessed at runtime
+export const root = getRoot();
 
 // Helper functions for tree traversal
 export function findNodeByPath(root: LevelFolder, path: string[]): LevelNode | null {

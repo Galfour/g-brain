@@ -1,4 +1,5 @@
 import type { FormalWordsConfig } from './types';
+import { m } from '$lib/paraglide/messages.js';
 
 // List of common English words for real word levels
 const englishWords = [
@@ -246,13 +247,23 @@ function generateIsSubstring(): { prompt: string; example: string; correctAnswer
 	return { prompt, example, correctAnswer, options };
 }
 
+function getLevelTitle(levelId: string): string {
+	const levelNum = levelId.split('-').pop();
+	return (m[`level_formal_words_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
+}
+
+function getLevelSubtitle(levelId: string): string {
+	const levelNum = levelId.split('-').pop();
+	return (m[`level_formal_words_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
+}
+
 export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 	const configs: Record<string, FormalWordsConfig> = {
 		'formal-words-1': {
 			levelType: 'real-concatenate',
 			answerType: 'text',
-			title: 'Formal Words 1: Real Word Concatenation',
-			subtitle: 'Concatenate 2-4 English words together',
+			title: getLevelTitle('formal-words-1'),
+			subtitle: getLevelSubtitle('formal-words-1'),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -268,8 +279,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-2': {
 			levelType: 'formal-concatenate',
 			answerType: 'text',
-			title: 'Formal Words 2: Formal Word Concatenation',
-			subtitle: 'Concatenate 2-4 binary or hexadecimal words together',
+			title: getLevelTitle('formal-words-2'),
+			subtitle: getLevelSubtitle('formal-words-2'),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -281,8 +292,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-3': {
 			levelType: 'real-reverse',
 			answerType: 'text',
-			title: 'Formal Words 3: Real Word Reverse',
-			subtitle: 'Write the reverse of an English word',
+			title: getLevelTitle('formal-words-3'),
+			subtitle: getLevelSubtitle('formal-words-3'),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -294,8 +305,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-4': {
 			levelType: 'formal-reverse',
 			answerType: 'text',
-			title: 'Formal Words 4: Formal Word Reverse',
-			subtitle: 'Write the reverse of a binary or hexadecimal word',
+			title: getLevelTitle('formal-words-4'),
+			subtitle: getLevelSubtitle('formal-words-4'),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -307,8 +318,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-5': {
 			levelType: 'palindrome-check',
 			answerType: 'binary',
-			title: 'Formal Words 5: Palindrome Check',
-			subtitle: 'Determine if a binary or hexadecimal word is a palindrome',
+			title: getLevelTitle('formal-words-5'),
+			subtitle: getLevelSubtitle('formal-words-5'),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -323,8 +334,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-6': {
 			levelType: 'isPrefix',
 			answerType: 'binary',
-			title: 'Formal Words 6: Is Prefix',
-			subtitle: 'Determine if one word is a prefix of another',
+			title: getLevelTitle('formal-words-6'),
+			subtitle: getLevelSubtitle('formal-words-6'),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -339,8 +350,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-7': {
 			levelType: 'isSuffix',
 			answerType: 'binary',
-			title: 'Formal Words 7: Is Suffix',
-			subtitle: 'Determine if one word is a suffix of another',
+			title: getLevelTitle('formal-words-7'),
+			subtitle: getLevelSubtitle('formal-words-7'),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -355,8 +366,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-8': {
 			levelType: 'isSubstring',
 			answerType: 'binary',
-			title: 'Formal Words 8: Is Substring',
-			subtitle: 'Determine if one word is a substring of another',
+			title: getLevelTitle('formal-words-8'),
+			subtitle: getLevelSubtitle('formal-words-8'),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {

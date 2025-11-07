@@ -1,4 +1,30 @@
 import type { ControlZoneConfig } from './types';
+import { m } from '$lib/paraglide/messages.js';
+
+function getLevelTitle(levelId: string): string {
+	const levelNum = levelId.split('-').pop();
+	return (m[`level_control_zone_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
+}
+
+function getLevelSubtitle(levelId: string): string {
+	const levelNum = levelId.split('-').pop();
+	return (m[`level_control_zone_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
+}
+
+function getButtonLabel(buttonId: string): string {
+	const buttonMap: Record<string, keyof typeof m> = {
+		'up': 'button_a',
+		'down': 'button_b',
+		'left': 'button_c',
+		'right': 'button_d',
+		'diag-forward': 'button_c',
+		'diag-back': 'button_d',
+		'rotate-cw': 'button_c',
+		'rotate-ccw': 'button_d'
+	};
+	const key = buttonMap[buttonId] || 'button_a';
+	return (m[key] as (inputs?: any) => string)({}) as string;
+}
 
 // Generate random diagonal direction that's not too close to horizontal
 function generateRandomDiagonalDirection(): number {
@@ -28,8 +54,8 @@ function generateRandomDiagonalDirection(): number {
 export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 	const configs: Record<string, ControlZoneConfig> = {
 		'control-zone-1': {
-			title: 'Control Zone 1: Simple Translation',
-			subtitle: 'Use the buttons to move the player to the target zone',
+			title: getLevelTitle('control-zone-1'),
+			subtitle: getLevelSubtitle('control-zone-1'),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -58,14 +84,14 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			buttons: [
 				{
 					id: 'up',
-					label: 'Button A',
+					label: getButtonLabel('up'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: 20
 				},
 				{
 					id: 'down',
-					label: 'Button B',
+					label: getButtonLabel('down'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: -20
@@ -73,8 +99,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-2': {
-			title: 'Control Zone 2: Two Directions',
-			subtitle: 'Navigate using two button pairs',
+			title: getLevelTitle('control-zone-2'),
+			subtitle: getLevelSubtitle('control-zone-2'),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -109,28 +135,28 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			buttons: [
 				{
 					id: 'up',
-					label: 'Button A',
+					label: getButtonLabel('up'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: 20
 				},
 				{
 					id: 'down',
-					label: 'Button B',
+					label: getButtonLabel('down'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: -20
 				},
 				{
 					id: 'left',
-					label: 'Button C',
+					label: getButtonLabel('left'),
 					transformId: 'horizontal',
 					property: 'distance',
 					increment: -20
 				},
 				{
 					id: 'right',
-					label: 'Button D',
+					label: getButtonLabel('right'),
 					transformId: 'horizontal',
 					property: 'distance',
 					increment: 20
@@ -138,8 +164,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-3': {
-			title: 'Control Zone 3: Diagonal Movement',
-			subtitle: 'Find the diagonal translation pattern',
+			title: getLevelTitle('control-zone-3'),
+			subtitle: getLevelSubtitle('control-zone-3'),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -174,28 +200,28 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			buttons: [
 				{
 					id: 'up',
-					label: 'Button A',
+					label: getButtonLabel('up'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: 20
 				},
 				{
 					id: 'down',
-					label: 'Button B',
+					label: getButtonLabel('down'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: -20
 				},
 				{
 					id: 'diag-forward',
-					label: 'Button C',
+					label: getButtonLabel('diag-forward'),
 					transformId: 'diagonal',
 					property: 'distance',
 					increment: 20
 				},
 				{
 					id: 'diag-back',
-					label: 'Button D',
+					label: getButtonLabel('diag-back'),
 					transformId: 'diagonal',
 					property: 'distance',
 					increment: -20
@@ -203,8 +229,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-4': {
-			title: 'Control Zone 4: Translation and Rotation',
-			subtitle: 'Combine translation with rotation around the center',
+			title: getLevelTitle('control-zone-4'),
+			subtitle: getLevelSubtitle('control-zone-4'),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -242,28 +268,28 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			buttons: [
 				{
 					id: 'up',
-					label: 'Button A',
+					label: getButtonLabel('up'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: 20
 				},
 				{
 					id: 'down',
-					label: 'Button B',
+					label: getButtonLabel('down'),
 					transformId: 'vertical',
 					property: 'distance',
 					increment: -20
 				},
 				{
 					id: 'rotate-cw',
-					label: 'Button C',
+					label: getButtonLabel('rotate-cw'),
 					transformId: 'rotate',
 					property: 'angle',
 					increment: 15
 				},
 				{
 					id: 'rotate-ccw',
-					label: 'Button D',
+					label: getButtonLabel('rotate-ccw'),
 					transformId: 'rotate',
 					property: 'angle',
 					increment: -15
