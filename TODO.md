@@ -6,7 +6,7 @@
 - [X] lessons before each exercise with new concept
 - [X] level tree (with validation)
 - [X] level scores
-- [] internationalisation
+- [X] internationalisation
 - [] integration with rememboo or anki
 
 # nits

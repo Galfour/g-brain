@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Row from '$lib/component/Row.svelte';
 	import Column from '$lib/component/Column.svelte';
 	import Card from '$lib/component/Card.svelte';
@@ -8,7 +9,7 @@
 	import type { BooleanGatesConfig } from './types';
 	import { m } from '$lib/paraglide/messages.js';
 
-	let { config, oncomplete, children }: { config: BooleanGatesConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: BooleanGatesConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: Snippet } = $props();
 
 	// Initialize all levers OFF
 	const allLevers = $state(new Array(config.maxLevers).fill(false));
@@ -114,5 +115,7 @@
 		</Card>
 	</Row>
 
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </Column>

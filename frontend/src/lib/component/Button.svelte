@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	let {
 		variant = 'primary',
 		disabled = false,
@@ -8,12 +9,14 @@
 		variant?: 'primary' | 'surface' | 'ghost';
 		disabled?: boolean;
 		onclick?: (e: MouseEvent) => void;
-		children?: () => any;
+		children?: Snippet;
 	}>();
 </script>
 
 <button class={`btn btn--${variant}`} {disabled} onclick={onclick}>
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </button>
 
 

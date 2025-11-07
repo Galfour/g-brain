@@ -2,16 +2,6 @@ import type { BooleanGatesConfig } from './types';
 import { colors } from './types';
 import { m } from '$lib/paraglide/messages.js';
 
-function getLevelTitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_boolean_gates_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
-function getLevelSubtitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_boolean_gates_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
 export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 	const configs: Record<string, BooleanGatesConfig> = {
 		'boolean-gates-1': {
@@ -22,8 +12,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2, 3), Output 2 = OR(4, 5, 6)
 			inputColors: [colors[0], colors[0], colors[0], colors[1], colors[1], colors[1]], // All inputs for output 1 are blue, all for output 2 are green
 			outputColors: [colors[0], colors[1]], // Output 1 blue, output 2 green
-			title: getLevelTitle('boolean-gates-1'),
-			subtitle: getLevelSubtitle('boolean-gates-1'),
+			title: m.level_boolean_gates_1_title(),
+			subtitle: m.level_boolean_gates_1_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -43,8 +33,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2), Output 2 = OR(4, 5), Output 3 = OR(6, 8)
 			inputColors: [colors[0], colors[0], colors[1], colors[1], colors[2], colors[2]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
-			title: getLevelTitle('boolean-gates-2'),
-			subtitle: getLevelSubtitle('boolean-gates-2'),
+			title: m.level_boolean_gates_2_title(),
+			subtitle: m.level_boolean_gates_2_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -64,8 +54,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = AND(1, 3), Output 2 = AND(4, 5), Output 3 = AND(7, 8)
 			inputColors: [colors[0], colors[0], colors[1], colors[1], colors[2], colors[2]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
-			title: getLevelTitle('boolean-gates-3'),
-			subtitle: getLevelSubtitle('boolean-gates-3'),
+			title: m.level_boolean_gates_3_title(),
+			subtitle: m.level_boolean_gates_3_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -86,8 +76,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Lever 5 (index 4 in active inputs, which is lever at position 4) is active but not used - give it a different color
 			inputColors: [colors[0], colors[0], colors[0], colors[3], colors[1], colors[1], colors[1]], // Output 1 inputs are blue, output 2 inputs are green, unused lever gets purple
 			outputColors: [colors[0], colors[1]], // Output 1 blue, output 2 green
-			title: getLevelTitle('boolean-gates-4'),
-			subtitle: getLevelSubtitle('boolean-gates-4'),
+			title: m.level_boolean_gates_4_title(),
+			subtitle: m.level_boolean_gates_4_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -107,8 +97,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2, 3), Output 2 = OR(5, 6, 7), Output 3 = OR(8, 10)
 			inputColors: [colors[0], colors[0], colors[0], colors[1], colors[1], colors[1], colors[2], colors[2]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2]], // Output 1 blue, output 2 green, output 3 orange
-			title: getLevelTitle('boolean-gates-5'),
-			subtitle: getLevelSubtitle('boolean-gates-5'),
+			title: m.level_boolean_gates_5_title(),
+			subtitle: m.level_boolean_gates_5_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -128,8 +118,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2), Output 2 = OR(4, 5), Output 3 = OR(6, 8), Output 4 = OR(9, 10)
 			inputColors: [colors[0], colors[0], colors[1], colors[1], colors[2], colors[2], colors[3], colors[3]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
-			title: getLevelTitle('boolean-gates-6'),
-			subtitle: getLevelSubtitle('boolean-gates-6'),
+			title: m.level_boolean_gates_6_title(),
+			subtitle: m.level_boolean_gates_6_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -149,8 +139,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2, 3, 4), Output 2 = OR(6, 7), Output 3 = OR(9, 10, 11)
 			inputColors: [colors[0], colors[0], colors[0], colors[0], colors[1], colors[1], colors[2], colors[2], colors[2]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2]], // Each output matches its inputs
-			title: getLevelTitle('boolean-gates-7'),
-			subtitle: getLevelSubtitle('boolean-gates-7'),
+			title: m.level_boolean_gates_7_title(),
+			subtitle: m.level_boolean_gates_7_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -170,8 +160,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2), Output 2 = AND(4, 5, 6), Output 3 = OR(7, 9), Output 4 = AND(10, 11, 12)
 			inputColors: [colors[0], colors[0], colors[1], colors[1], colors[1], colors[2], colors[2], colors[3], colors[3], colors[3]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
-			title: getLevelTitle('boolean-gates-8'),
-			subtitle: getLevelSubtitle('boolean-gates-8'),
+			title: m.level_boolean_gates_8_title(),
+			subtitle: m.level_boolean_gates_8_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -191,8 +181,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2, 3), Output 2 = AND(5, 6, 7), Output 3 = XOR(9, 10), Output 4 = OR(11, 12, 14, 15)
 			inputColors: [colors[0], colors[0], colors[0], colors[1], colors[1], colors[1], colors[2], colors[2], colors[3], colors[3], colors[3], colors[3]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2], colors[3]], // Each output matches its inputs
-			title: getLevelTitle('boolean-gates-9'),
-			subtitle: getLevelSubtitle('boolean-gates-9'),
+			title: m.level_boolean_gates_9_title(),
+			subtitle: m.level_boolean_gates_9_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -217,8 +207,8 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			// Output 1 = OR(1, 2, 3), Output 2 = AND(5, 6), Output 3 = XOR(8, 9), Output 4 = NAND(10, 11), Output 5 = OR(13, 14, 15)
 			inputColors: [colors[0], colors[0], colors[0], colors[1], colors[1], colors[2], colors[2], colors[3], colors[3], colors[4], colors[4], colors[4]], // Matching colors for each output group
 			outputColors: [colors[0], colors[1], colors[2], colors[3], colors[4]], // Each output matches its inputs
-			title: getLevelTitle('boolean-gates-10'),
-			subtitle: getLevelSubtitle('boolean-gates-10'),
+			title: m.level_boolean_gates_10_title(),
+			subtitle: m.level_boolean_gates_10_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {

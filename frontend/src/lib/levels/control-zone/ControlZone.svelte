@@ -1,14 +1,15 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Row from '$lib/component/Row.svelte';
 	import Column from '$lib/component/Column.svelte';
 	import Card from '$lib/component/Card.svelte';
 	import Button from '$lib/component/Button.svelte';
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
-	import type { ControlZoneConfig, Transform } from './types';
+	import type { ControlZoneConfig, Transform, TransformProperty } from './types';
 	import { m } from '$lib/paraglide/messages.js';
 
-	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: Snippet } = $props();
 
 	// Player state: only x, y
 	const playerState = $state({
@@ -128,6 +129,41 @@
 		return false;
 	}
 
+	// Helper to get a numeric property from a transform
+	function getTransformProperty(transform: Transform, property: TransformProperty): number | undefined {
+		if (property === 'distance' && transform.type === 'translation') {
+			return transform.distance;
+		}
+		if (property === 'direction' && transform.type === 'translation') {
+			return transform.direction;
+		}
+		if (property === 'angle' && transform.type === 'rotation') {
+			return transform.angle;
+		}
+		if (property === 'scaleX' && transform.type === 'scaling') {
+			return transform.scaleX;
+		}
+		if (property === 'scaleY' && transform.type === 'scaling') {
+			return transform.scaleY;
+		}
+		return undefined;
+	}
+
+	// Helper to set a numeric property on a transform
+	function setTransformProperty(transform: Transform, property: TransformProperty, value: number): void {
+		if (property === 'distance' && transform.type === 'translation') {
+			transform.distance = value;
+		} else if (property === 'direction' && transform.type === 'translation') {
+			transform.direction = value;
+		} else if (property === 'angle' && transform.type === 'rotation') {
+			transform.angle = value;
+		} else if (property === 'scaleX' && transform.type === 'scaling') {
+			transform.scaleX = value;
+		} else if (property === 'scaleY' && transform.type === 'scaling') {
+			transform.scaleY = value;
+		}
+	}
+
 	// Handle button click: modify transform property
 	function handleButtonClick(buttonId: string) {
 		const button = config.buttons.find(b => b.id === buttonId);
@@ -137,7 +173,7 @@
 		if (!transform) return;
 
 		// Get current value
-		const currentValue = (transform as any)[button.property];
+		const currentValue = getTransformProperty(transform, button.property);
 		if (currentValue === undefined) return;
 
 		// Save entire state
@@ -178,7 +214,7 @@
 		}
 
 		// Apply the change
-		(transform as any)[button.property] = newValue;
+		setTransformProperty(transform, button.property, newValue);
 
 		// Calculate new player position (without clamping)
 		const newPos = calculatePlayerPos(transformStates);
@@ -268,5 +304,7 @@
 		</Card>
 	</Row>
 
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </Column>

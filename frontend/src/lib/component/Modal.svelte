@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	let {
 		open = false,
 		title = '',
@@ -10,7 +11,7 @@
 		title?: string;
 		onclose?: () => void;
 		style?: string;
-		children?: () => any;
+		children?: Snippet;
 	}>();
 
 	let modalElement: HTMLDivElement | undefined = $state();
@@ -101,7 +102,9 @@
 				<div class="title" style="margin-bottom: var(--space-4);">{title}</div>
 			{/if}
 			<div>
-				{@render children?.()}
+				{#if children}
+					{@render children()}
+				{/if}
 			</div>
 		</div>
 	</div>

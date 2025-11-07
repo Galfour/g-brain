@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Column from '$lib/component/Column.svelte';
 	import Row from '$lib/component/Row.svelte';
 	import Title from '$lib/component/Title.svelte';
@@ -14,7 +15,7 @@
 		title: string;
 		sectionId: string;
 		oncomplete?: (status: 'success' | 'failure') => void;
-		children?: () => any;
+		children?: Snippet;
 	}>();
 
 	function handleComplete() {
@@ -30,7 +31,9 @@
 	<Title>{title}</Title>
 	
 	<div style="font-size: 16px; line-height: 1.6; color: var(--color-text);">
-		{@render children?.()}
+		{#if children}
+			{@render children()}
+		{/if}
 	</div>
 
 	<Row gap="var(--space-3)" style="justify-content: flex-start;">

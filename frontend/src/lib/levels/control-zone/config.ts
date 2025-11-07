@@ -1,29 +1,24 @@
 import type { ControlZoneConfig } from './types';
 import { m } from '$lib/paraglide/messages.js';
 
-function getLevelTitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_control_zone_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
-function getLevelSubtitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_control_zone_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
 function getButtonLabel(buttonId: string): string {
-	const buttonMap: Record<string, keyof typeof m> = {
-		'up': 'button_a',
-		'down': 'button_b',
-		'left': 'button_c',
-		'right': 'button_d',
-		'diag-forward': 'button_c',
-		'diag-back': 'button_d',
-		'rotate-cw': 'button_c',
-		'rotate-ccw': 'button_d'
+	const buttonMap: Record<string, 'a' | 'b' | 'c' | 'd'> = {
+		'up': 'a',
+		'down': 'b',
+		'left': 'c',
+		'right': 'd',
+		'diag-forward': 'c',
+		'diag-back': 'd',
+		'rotate-cw': 'c',
+		'rotate-ccw': 'd'
 	};
-	const key = buttonMap[buttonId] || 'button_a';
-	return (m[key] as (inputs?: any) => string)({}) as string;
+	const button = buttonMap[buttonId] || 'a';
+	switch (button) {
+		case 'a': return m.button_a();
+		case 'b': return m.button_b();
+		case 'c': return m.button_c();
+		case 'd': return m.button_d();
+	}
 }
 
 // Generate random diagonal direction that's not too close to horizontal
@@ -54,8 +49,8 @@ function generateRandomDiagonalDirection(): number {
 export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 	const configs: Record<string, ControlZoneConfig> = {
 		'control-zone-1': {
-			title: getLevelTitle('control-zone-1'),
-			subtitle: getLevelSubtitle('control-zone-1'),
+			title: m.level_control_zone_1_title(),
+			subtitle: m.level_control_zone_1_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -99,8 +94,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-2': {
-			title: getLevelTitle('control-zone-2'),
-			subtitle: getLevelSubtitle('control-zone-2'),
+			title: m.level_control_zone_2_title(),
+			subtitle: m.level_control_zone_2_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {
@@ -164,8 +159,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-3': {
-			title: getLevelTitle('control-zone-3'),
-			subtitle: getLevelSubtitle('control-zone-3'),
+			title: m.level_control_zone_3_title(),
+			subtitle: m.level_control_zone_3_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -229,8 +224,8 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			]
 		},
 		'control-zone-4': {
-			title: getLevelTitle('control-zone-4'),
-			subtitle: getLevelSubtitle('control-zone-4'),
+			title: m.level_control_zone_4_title(),
+			subtitle: m.level_control_zone_4_subtitle(),
 			source: 'fixed',
 			requiredCompletions: 2,
 			scoreConfig: {

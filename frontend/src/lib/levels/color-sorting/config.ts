@@ -1,16 +1,6 @@
 import type { ColorSortingConfig, RGB } from './types';
 import { m } from '$lib/paraglide/messages.js';
 
-function getLevelTitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_color_sorting_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
-function getLevelSubtitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_color_sorting_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
 // Helper to generate colors that vary only in one property (for easy levels)
 function generateColorsByRedness(numColors: number): RGB[] {
 	const colors: RGB[] = [];
@@ -255,8 +245,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'redness',
 			generateColors: () => generateColorsByRedness(5),
-			title: getLevelTitle('color-sorting-1'),
-			subtitle: getLevelSubtitle('color-sorting-1'),
+			title: m.level_color_sorting_1_title(),
+			subtitle: m.level_color_sorting_1_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -268,8 +258,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'greenness',
 			generateColors: () => generateColorsByGreenness(5),
-			title: getLevelTitle('color-sorting-2'),
-			subtitle: getLevelSubtitle('color-sorting-2'),
+			title: m.level_color_sorting_2_title(),
+			subtitle: m.level_color_sorting_2_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -281,8 +271,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'blueness',
 			generateColors: () => generateColorsByBlueness(5),
-			title: getLevelTitle('color-sorting-3'),
-			subtitle: getLevelSubtitle('color-sorting-3'),
+			title: m.level_color_sorting_3_title(),
+			subtitle: m.level_color_sorting_3_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -294,8 +284,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 10,
 			property: 'redness',
 			generateColors: () => generateColorsByRedness(10),
-			title: getLevelTitle('color-sorting-4'),
-			subtitle: getLevelSubtitle('color-sorting-4'),
+			title: m.level_color_sorting_4_title(),
+			subtitle: m.level_color_sorting_4_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -307,8 +297,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 10,
 			property: 'greenness',
 			generateColors: () => generateColorsByGreenness(10),
-			title: getLevelTitle('color-sorting-5'),
-			subtitle: getLevelSubtitle('color-sorting-5'),
+			title: m.level_color_sorting_5_title(),
+			subtitle: m.level_color_sorting_5_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -320,8 +310,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'hue',
 			generateColors: () => generateColorsByHue(5),
-			title: getLevelTitle('color-sorting-6'),
-			subtitle: getLevelSubtitle('color-sorting-6'),
+			title: m.level_color_sorting_6_title(),
+			subtitle: m.level_color_sorting_6_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -336,8 +326,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 10,
 			property: 'hue',
 			generateColors: () => generateColorsByHue(10),
-			title: getLevelTitle('color-sorting-7'),
-			subtitle: getLevelSubtitle('color-sorting-7'),
+			title: m.level_color_sorting_7_title(),
+			subtitle: m.level_color_sorting_7_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -349,8 +339,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'saturation',
 			generateColors: () => generateColorsBySaturation(5),
-			title: getLevelTitle('color-sorting-8'),
-			subtitle: getLevelSubtitle('color-sorting-8'),
+			title: m.level_color_sorting_8_title(),
+			subtitle: m.level_color_sorting_8_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -366,8 +356,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 5,
 			property: 'brightness',
 			generateColors: () => generateColorsByBrightness(5),
-			title: getLevelTitle('color-sorting-9'),
-			subtitle: getLevelSubtitle('color-sorting-9'),
+			title: m.level_color_sorting_9_title(),
+			subtitle: m.level_color_sorting_9_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -382,8 +372,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 10,
 			property: 'saturation',
 			generateColors: () => generateColorsBySaturation(10),
-			title: getLevelTitle('color-sorting-10'),
-			subtitle: getLevelSubtitle('color-sorting-10'),
+			title: m.level_color_sorting_10_title(),
+			subtitle: m.level_color_sorting_10_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -395,8 +385,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 10,
 			property: 'brightness',
 			generateColors: () => generateColorsByBrightness(10),
-			title: getLevelTitle('color-sorting-11'),
-			subtitle: getLevelSubtitle('color-sorting-11'),
+			title: m.level_color_sorting_11_title(),
+			subtitle: m.level_color_sorting_11_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -408,8 +398,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 20,
 			property: 'redness',
 			generateColors: () => generateMixedColorsByRedness(20),
-			title: getLevelTitle('color-sorting-12'),
-			subtitle: getLevelSubtitle('color-sorting-12'),
+			title: m.level_color_sorting_12_title(),
+			subtitle: m.level_color_sorting_12_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -421,8 +411,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 20,
 			property: 'hue',
 			generateColors: () => generateMixedColorsByHue(20),
-			title: getLevelTitle('color-sorting-13'),
-			subtitle: getLevelSubtitle('color-sorting-13'),
+			title: m.level_color_sorting_13_title(),
+			subtitle: m.level_color_sorting_13_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -434,8 +424,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 50,
 			property: 'brightness',
 			generateColors: () => generateMixedColorsByBrightness(50),
-			title: getLevelTitle('color-sorting-14'),
-			subtitle: getLevelSubtitle('color-sorting-14'),
+			title: m.level_color_sorting_14_title(),
+			subtitle: m.level_color_sorting_14_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -447,8 +437,8 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			numColors: 50,
 			property: 'hue',
 			generateColors: () => generateMixedColorsByHue(50),
-			title: getLevelTitle('color-sorting-15'),
-			subtitle: getLevelSubtitle('color-sorting-15'),
+			title: m.level_color_sorting_15_title(),
+			subtitle: m.level_color_sorting_15_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5
 		}

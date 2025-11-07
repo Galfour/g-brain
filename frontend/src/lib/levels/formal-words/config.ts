@@ -247,23 +247,14 @@ function generateIsSubstring(): { prompt: string; example: string; correctAnswer
 	return { prompt, example, correctAnswer, options };
 }
 
-function getLevelTitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_formal_words_${levelNum}_title` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
-
-function getLevelSubtitle(levelId: string): string {
-	const levelNum = levelId.split('-').pop();
-	return (m[`level_formal_words_${levelNum}_subtitle` as keyof typeof m] as (inputs?: any) => string)({}) as string;
-}
 
 export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 	const configs: Record<string, FormalWordsConfig> = {
 		'formal-words-1': {
 			levelType: 'real-concatenate',
 			answerType: 'text',
-			title: getLevelTitle('formal-words-1'),
-			subtitle: getLevelSubtitle('formal-words-1'),
+			title: m.level_formal_words_1_title(),
+			subtitle: m.level_formal_words_1_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -279,8 +270,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-2': {
 			levelType: 'formal-concatenate',
 			answerType: 'text',
-			title: getLevelTitle('formal-words-2'),
-			subtitle: getLevelSubtitle('formal-words-2'),
+			title: m.level_formal_words_2_title(),
+			subtitle: m.level_formal_words_2_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -292,8 +283,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-3': {
 			levelType: 'real-reverse',
 			answerType: 'text',
-			title: getLevelTitle('formal-words-3'),
-			subtitle: getLevelSubtitle('formal-words-3'),
+			title: m.level_formal_words_3_title(),
+			subtitle: m.level_formal_words_3_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -305,8 +296,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-4': {
 			levelType: 'formal-reverse',
 			answerType: 'text',
-			title: getLevelTitle('formal-words-4'),
-			subtitle: getLevelSubtitle('formal-words-4'),
+			title: m.level_formal_words_4_title(),
+			subtitle: m.level_formal_words_4_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 5,
 			scoreConfig: {
@@ -318,8 +309,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-5': {
 			levelType: 'palindrome-check',
 			answerType: 'binary',
-			title: getLevelTitle('formal-words-5'),
-			subtitle: getLevelSubtitle('formal-words-5'),
+			title: m.level_formal_words_5_title(),
+			subtitle: m.level_formal_words_5_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -334,8 +325,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-6': {
 			levelType: 'isPrefix',
 			answerType: 'binary',
-			title: getLevelTitle('formal-words-6'),
-			subtitle: getLevelSubtitle('formal-words-6'),
+			title: m.level_formal_words_6_title(),
+			subtitle: m.level_formal_words_6_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -350,8 +341,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-7': {
 			levelType: 'isSuffix',
 			answerType: 'binary',
-			title: getLevelTitle('formal-words-7'),
-			subtitle: getLevelSubtitle('formal-words-7'),
+			title: m.level_formal_words_7_title(),
+			subtitle: m.level_formal_words_7_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {
@@ -366,8 +357,8 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 		'formal-words-8': {
 			levelType: 'isSubstring',
 			answerType: 'binary',
-			title: getLevelTitle('formal-words-8'),
-			subtitle: getLevelSubtitle('formal-words-8'),
+			title: m.level_formal_words_8_title(),
+			subtitle: m.level_formal_words_8_subtitle(),
 			source: 'procgen',
 			requiredCompletions: 20,
 			scoreConfig: {

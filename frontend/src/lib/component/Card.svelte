@@ -1,11 +1,14 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
     let { as = 'div', elevated = false, style = '', children } = $props<{
-        as?: string; elevated?: boolean; style?: string; children?: () => any;
+        as?: string; elevated?: boolean; style?: string; children?: Snippet;
     }>();
 </script>
 
 <svelte:element this={as} class="card" style={elevated ? 'box-shadow: var(--shadow-md);' + style : style}>
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </svelte:element>
 
 

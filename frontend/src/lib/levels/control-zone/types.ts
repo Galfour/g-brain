@@ -12,11 +12,13 @@ export type Obstacle = {
 	height: number;
 };
 
+export type TransformProperty = 'distance' | 'direction' | 'angle' | 'scaleX' | 'scaleY';
+
 export type Button = {
 	id: string;
 	label: string;
 	transformId: string;
-	property: string; // e.g., 'direction', 'distance', 'angle', 'scaleX'
+	property: TransformProperty;
 	increment: number;
 	minValue?: number;
 	maxValue?: number;

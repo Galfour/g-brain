@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
     let {
         as = 'div',
         gap = 'var(--space-4)',
@@ -16,7 +17,7 @@
         wrap?: boolean;
         padding?: string | number;
         style?: string;
-        children?: () => any;
+        children?: Snippet;
     }>();
 
 	const gapValue = typeof gap === 'number' ? `${gap}px` : gap;
@@ -28,7 +29,9 @@
 	this={as}
 	style={`display:flex; flex-direction:row; gap:${gapValue}; align-items:${align}; justify-content:${justify}; flex-wrap:${wrap ? 'wrap' : 'nowrap'};${paddingValue ? ` padding:${paddingValue};` : ''} ${style}`}
 >
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </svelte:element>
 
 

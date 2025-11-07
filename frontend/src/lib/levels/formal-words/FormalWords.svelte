@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import Column from '$lib/component/Column.svelte';
 	import Row from '$lib/component/Row.svelte';
 	import Card from '$lib/component/Card.svelte';
@@ -12,7 +13,7 @@
 	import type { FormalWordsConfig } from './types';
 	import { m } from '$lib/paraglide/messages.js';
 
-	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: Snippet } = $props();
 
 	// Generate question on mount
 	const question = $state(config.generateQuestion());
@@ -144,6 +145,8 @@
 		</Card>
 	</Row>
 
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </Column>
 

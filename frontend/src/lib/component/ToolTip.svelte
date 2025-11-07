@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { onMount } from 'svelte';
 	
 	type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
@@ -12,7 +13,7 @@
 		text?: string; 
 		style?: string; 
 		position?: TooltipPosition;
-		children?: () => any 
+		children?: Snippet 
 	}>();
 
 	let tooltipElement: HTMLSpanElement | undefined = $state();
@@ -145,7 +146,9 @@
 	role="button"
 	tabindex="0"
 >
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 	{#if text}
 		<span 
 			class="tooltip__bubble tooltip__bubble--{actualPosition} {isVisible ? 'visible' : ''}"

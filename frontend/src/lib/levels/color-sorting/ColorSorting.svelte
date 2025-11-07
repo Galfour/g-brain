@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { Snippet } from 'svelte';
 	import { flip } from 'svelte/animate';
 	import Row from '$lib/component/Row.svelte';
 	import Column from '$lib/component/Column.svelte';
@@ -10,7 +11,7 @@
 	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
 	import { m } from '$lib/paraglide/messages.js';
 
-	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: Snippet } = $props();
 
 	// Determine if this is an easy level (numColors <= 10)
 	const isEasyLevel = config.numColors <= 10;
@@ -135,6 +136,8 @@
 		</Card>
 	</Row>
 
-	{@render children?.()}
+	{#if children}
+		{@render children()}
+	{/if}
 </Column>
 
