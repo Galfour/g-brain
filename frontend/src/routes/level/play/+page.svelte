@@ -20,13 +20,16 @@
 	import FormalWords from '$lib/levels/formal-words/FormalWords.svelte';
 	import { getLevelConfig as getFormalWordsConfig } from '$lib/levels/formal-words/config';
 	import type { FormalWordsConfig } from '$lib/levels/formal-words/types';
+	import FillEstimation from '$lib/levels/fill-estimation/FillEstimation.svelte';
+	import { getLevelConfig as getFillEstimationConfig } from '$lib/levels/fill-estimation/config';
+	import type { FillEstimationConfig } from '$lib/levels/fill-estimation/types';
 	import Lesson from '$lib/levels/lesson/Lesson.svelte';
 	import { getLessonConfig } from '$lib/levels/lesson/config';
 	import type { LessonConfig } from '$lib/levels/lesson/types';
 	import { trackLevelStart, trackLevelCompletion, getCurrentPlayer, createNewPlayer, getValidationProgress, getRequiredCompletionsForLevel } from '$lib/player-data';
 	import { levels } from '$lib/levels';
 
-	type LevelConfig = BooleanGatesConfig | ColorSortingConfig | ControlZoneConfig | FormalWordsConfig;
+	type LevelConfig = BooleanGatesConfig | ColorSortingConfig | ControlZoneConfig | FormalWordsConfig | FillEstimationConfig;
 
 	type LevelRegistry = {
 		prefix: string;
@@ -49,13 +52,17 @@
 		{
 			prefix: 'formal-words-',
 			getConfig: getFormalWordsConfig
+		},
+		{
+			prefix: 'fill-estimation-',
+			getConfig: getFillEstimationConfig
 		}
 	];
 
 	let currentLevelId = $state<string | null>(null);
 	let currentConfig = $state<LevelConfig | null>(null);
 	let currentLessonConfig = $state<LessonConfig | null>(null);
-	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | 'lesson' | null>(null);
+	let currentLevelType = $state<'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | 'fill-estimation' | 'lesson' | null>(null);
 	let completionModalOpen = $state(false);
 	let completionStatus: 'success' | 'failure' | null = $state(null);
 	let validationProgress = $state(0);
@@ -104,7 +111,7 @@
 					const registry = findLevelRegistry(id);
 					if (registry) {
 						currentConfig = registry.getConfig(id);
-						currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words';
+						currentLevelType = registry.prefix.slice(0, -1) as 'boolean-gates' | 'color-sorting' | 'control-zone' | 'formal-words' | 'fill-estimation';
 						currentLessonConfig = null;
 					} else {
 						currentConfig = null;
@@ -191,6 +198,10 @@
 	{:else if currentLevelType === 'formal-words' && currentConfig}
 		{#key levelKey}
 			<FormalWords config={currentConfig as FormalWordsConfig} oncomplete={handleComplete} />
+		{/key}
+	{:else if currentLevelType === 'fill-estimation' && currentConfig}
+		{#key levelKey}
+			<FillEstimation config={currentConfig as FillEstimationConfig} oncomplete={handleComplete} />
 		{/key}
 	{:else}
 		<Column gap="var(--space-3)">

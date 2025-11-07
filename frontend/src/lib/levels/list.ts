@@ -2,6 +2,7 @@ import { getLevelConfig } from './boolean-gates/config';
 import { getLevelConfig as getColorSortingConfig } from './color-sorting/config';
 import { getLevelConfig as getControlZoneConfig } from './control-zone/config';
 import { getLevelConfig as getFormalWordsConfig } from './formal-words/config';
+import { getLevelConfig as getFillEstimationConfig } from './fill-estimation/config';
 import { getLessonConfig } from './lesson/config';
 import { m } from '$lib/paraglide/messages.js';
 
@@ -121,6 +122,26 @@ function getFormalWordsLevels(): LevelItem[] {
     });
 }
 
+// Generate fill estimation levels from config
+function getFillEstimationLevels(): LevelItem[] {
+    const levelIds = Array.from({ length: 14 }, (_, i) => `fill-estimation-${i + 1}`);
+    return levelIds.map(id => {
+        const config = getFillEstimationConfig(id);
+        if (!config) {
+            throw new Error(`Missing config for level: ${id}`);
+        }
+        return {
+            type: 'level' as const,
+            id,
+            title: config.title,
+            description: config.subtitle,
+            tags: ['estimation', 'visual', config.shape],
+            source: config.source,
+            requiredCompletions: config.requiredCompletions
+        };
+    });
+}
+
 function createLessonItem(folderId: string): LevelItem | null {
     const lessonId = `lesson-${folderId}`;
     const lessonConfig = getLessonConfig(lessonId);
@@ -165,6 +186,16 @@ function getRoot(): LevelFolder {
                 children: (() => {
                     const lesson = createLessonItem('control-zone');
                     return lesson ? [lesson, ...getControlZoneLevels()] : getControlZoneLevels();
+                })()
+            },
+            // fill-estimation at root
+            {
+                type: 'folder',
+                id: 'fill-estimation',
+                title: m.folder_fill_estimation(),
+                children: (() => {
+                    const lesson = createLessonItem('fill-estimation');
+                    return lesson ? [lesson, ...getFillEstimationLevels()] : getFillEstimationLevels();
                 })()
             },
             // formalism section containing boolean-gates and formal-words

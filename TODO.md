@@ -7,6 +7,7 @@
 - [X] level tree (with validation)
 - [X] level scores
 - [X] internationalisation
+- [] keyboard controls (mousetrap)
 - [] integration with rememboo or anki
 
 # nits
@@ -15,6 +16,8 @@
 # new levels
 - [X] control dot to target zone
 - [X] basic exercises on words
+- [X] estimate fill
+- [] memory tests
 - [] estimate relative size
 - [] add/multiply
 - [] some french lesson
