@@ -17,7 +17,7 @@
 
 	let currentPlayerName = $state('');
 	let allPlayers = $state<string[]>([]);
-	const playerData = $state<PlayerData>({ userName: '', levelStarts: [], levelCompletions: [] });
+	const playerData = $state<PlayerData>({ userName: '', levelStarts: [], levelCompletions: [], bestScores: [] });
 	let editingName = $state(false);
 	let nameInput = $state(playerData.userName);
 

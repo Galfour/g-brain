@@ -1,6 +1,7 @@
 <script lang="ts">
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
+	import LocaleSelector from '$lib/component/LocaleSelector.svelte';
 	let { children } = $props();
 </script>
 
@@ -15,6 +16,7 @@
 			<a href="/">Home</a>
 			<a href="/levels/list">Levels</a>
 			<a href="/stats">Stats</a>
+			<LocaleSelector />
 		</div>
 	</div>
 </nav>
