@@ -249,7 +249,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-2': {
@@ -262,7 +262,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-3': {
@@ -275,7 +275,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-4': {
@@ -288,7 +288,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-5': {
@@ -301,7 +301,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-6': {
@@ -314,7 +314,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				hue: 'Hue is the type of color - like red, blue, yellow, green. It\'s what makes a color "red" rather than "blue".'
@@ -330,7 +330,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-8': {
@@ -343,7 +343,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				saturation: 'Saturation is how intense or vivid a color is. A highly saturated red is bright and vibrant, while a low saturation red looks grayish or washed out.',
@@ -360,7 +360,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				brightness: 'Brightness is how light or dark a color is. A bright color is light and closer to white, while a dark color is closer to black.'
@@ -376,7 +376,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-11': {
@@ -389,7 +389,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-12': {
@@ -402,7 +402,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-13': {
@@ -415,7 +415,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-14': {
@@ -428,7 +428,7 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'swaps',
-				maximize: false
+				target: 'minimize'
 			}
 		},
 		'color-sorting-15': {

@@ -222,7 +222,7 @@ export function trackLevelStart(levelId: string, playerName?: string): void {
 	}
 }
 
-function getLevelScoreConfig(levelId: string): { primaryScore: string; maximize: boolean } | null {
+function getLevelScoreConfig(levelId: string): { primaryScore: string; target: 'maximize' | 'minimize' } | null {
 	// Try to get score config from level configs
 	if (levelId.startsWith('boolean-gates-')) {
 		const config = getLevelConfig(levelId);
@@ -289,7 +289,7 @@ export function trackLevelCompletion(levelId: string, status: LevelCompletionSta
 				// A "good score" is the lowest (for max score) or highest (for min score) score reached
 				// For maximize: good score is highest, so we want to update if new score > best
 				// For minimize: good score is lowest, so we want to update if new score < best
-				if (scoreConfig.maximize) {
+				if (scoreConfig.target === 'maximize') {
 					shouldUpdate = primaryScoreValue > existingBest.score;
 				} else {
 					shouldUpdate = primaryScoreValue < existingBest.score;

@@ -34,7 +34,7 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'clicks',
-				maximize: false
+				target: 'minimize'
 			},
 			targetZone: {
 				x: 300,
@@ -79,7 +79,7 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'clicks',
-				maximize: false
+				target: 'minimize'
 			},
 			targetZone: {
 				x: 450,
@@ -144,7 +144,7 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'clicks',
-				maximize: false
+				target: 'minimize'
 			},
 			targetZone: {
 				x: 450,
@@ -209,7 +209,7 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'clicks',
-				maximize: false
+				target: 'minimize'
 			},
 			targetZone: {
 				x: 450,

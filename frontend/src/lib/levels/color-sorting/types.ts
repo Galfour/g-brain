@@ -13,7 +13,7 @@ export type ColorSortingConfig = {
 	wordExplanations?: Record<string, string>; // Simple explanations for new words introduced in this level
 	scoreConfig?: {
 		primaryScore: string; // Name of the primary score metric (e.g., 'swaps')
-		maximize: boolean; // Whether to maximize (true) or minimize (false) the score
+		target: 'maximize' | 'minimize'; // Whether to maximize or minimize the score
 	};
 };
 

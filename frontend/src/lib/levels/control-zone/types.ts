@@ -42,6 +42,6 @@ export type ControlZoneConfig = {
 	requiredCompletions: number; // Number of consecutive successes required to validate the level
 	scoreConfig?: {
 		primaryScore: string; // Name of the primary score metric (e.g., 'clicks')
-		maximize: boolean; // Whether to maximize (true) or minimize (false) the score
+		target: 'maximize' | 'minimize'; // Whether to maximize or minimize the score
 	};
 };

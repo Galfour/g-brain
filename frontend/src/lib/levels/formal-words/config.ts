@@ -257,7 +257,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				concatenate: 'To concatenate means to join words together in order, one after another. For example, "cat" + "dog" = "catdog".',
@@ -274,7 +274,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			generateQuestion: generateFormalConcatenate
 		},
@@ -287,7 +287,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			generateQuestion: generateRealReverse
 		},
@@ -300,7 +300,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 5,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			generateQuestion: generateFormalReverse
 		},
@@ -313,7 +313,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 20,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				palindrome: 'A palindrome is a word that reads the same forwards and backwards. For example, "101" and "aba" are palindromes.'
@@ -329,7 +329,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 20,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				prefix: 'A prefix is a word that appears at the beginning of another word. For example, "ab" is a prefix of "abcd".'
@@ -345,7 +345,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 20,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				suffix: 'A suffix is a word that appears at the end of another word. For example, "cd" is a suffix of "abcd".'
@@ -361,7 +361,7 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			requiredCompletions: 20,
 			scoreConfig: {
 				primaryScore: 'attempts',
-				maximize: false
+				target: 'minimize'
 			},
 			wordExplanations: {
 				substring: 'A substring is a word that appears anywhere inside another word (at the beginning, middle, or end). For example, "bc" is a substring of "abcd".'

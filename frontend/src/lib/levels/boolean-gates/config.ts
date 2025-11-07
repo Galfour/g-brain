@@ -17,7 +17,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
@@ -38,7 +38,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
@@ -59,7 +59,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
@@ -81,7 +81,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
@@ -102,7 +102,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
@@ -123,7 +123,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
@@ -144,7 +144,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i] = inputs;
@@ -165,7 +165,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j] = inputs;
@@ -186,7 +186,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
@@ -212,7 +212,7 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			requiredCompletions: 2,
 			scoreConfig: {
 				primaryScore: 'toggles',
-				maximize: false
+				target: 'minimize'
 			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
