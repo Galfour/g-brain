@@ -18,9 +18,10 @@
 - [X] basic exercises on words
 - [X] estimate fill
 - [] memory tests
+- [] color theory
+- [] some french lesson (only in French mode)
 - [] estimate relative size
 - [] add/multiply
-- [] some french lesson
 
 # existing levels
 - [] improve lessons for all level types
