@@ -255,6 +255,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Concatenate 2-4 English words together',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			wordExplanations: {
 				concatenate: 'To concatenate means to join words together in order, one after another. For example, "cat" + "dog" = "catdog".',
 				concatenation: 'Concatenation means joining words together in order, one after another. For example, "cat" + "dog" = "catdog".'
@@ -268,6 +272,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Concatenate 2-4 binary or hexadecimal words together',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			generateQuestion: generateFormalConcatenate
 		},
 		'formal-words-3': {
@@ -277,6 +285,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Write the reverse of an English word',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			generateQuestion: generateRealReverse
 		},
 		'formal-words-4': {
@@ -286,6 +298,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Write the reverse of a binary or hexadecimal word',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			generateQuestion: generateFormalReverse
 		},
 		'formal-words-5': {
@@ -295,6 +311,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if a binary or hexadecimal word is a palindrome',
 			source: 'procgen',
 			requiredCompletions: 20,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			wordExplanations: {
 				palindrome: 'A palindrome is a word that reads the same forwards and backwards. For example, "101" and "aba" are palindromes.'
 			},
@@ -307,6 +327,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a prefix of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			wordExplanations: {
 				prefix: 'A prefix is a word that appears at the beginning of another word. For example, "ab" is a prefix of "abcd".'
 			},
@@ -319,6 +343,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a suffix of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			wordExplanations: {
 				suffix: 'A suffix is a word that appears at the end of another word. For example, "cd" is a suffix of "abcd".'
 			},
@@ -331,6 +359,10 @@ export function getLevelConfig(levelId: string): FormalWordsConfig | null {
 			subtitle: 'Determine if one word is a substring of another',
 			source: 'procgen',
 			requiredCompletions: 20,
+			scoreConfig: {
+				primaryScore: 'attempts',
+				maximize: false
+			},
 			wordExplanations: {
 				substring: 'A substring is a word that appears anywhere inside another word (at the beginning, middle, or end). For example, "bc" is a substring of "abcd".'
 			},

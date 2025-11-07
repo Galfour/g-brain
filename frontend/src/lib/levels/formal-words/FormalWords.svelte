@@ -11,7 +11,7 @@
 	import TextWithTooltips from '$lib/component/TextWithTooltips.svelte';
 	import type { FormalWordsConfig } from './types';
 
-	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
 	// Generate question on mount
 	const question = $state(config.generateQuestion());
@@ -21,6 +21,9 @@
 	
 	let submitted = $state(false);
 	let submissionResult: 'correct' | 'incorrect' | null = $state(null);
+	
+	// Track number of attempts
+	let attemptCount = $state(0);
 
 	// Get current answer based on answer type
 	const currentAnswer = $derived(() => {
@@ -53,12 +56,18 @@
 	function submitAnswer() {
 		if (!canSubmit()) return;
 		
+		attemptCount++;
 		submitted = true;
 		const correct = isCorrect();
 		submissionResult = correct ? 'correct' : 'incorrect';
 		
 		if (oncomplete) {
-			oncomplete(correct ? 'success' : 'failure');
+			if (correct) {
+				const scores: Record<string, number> = { attempts: attemptCount };
+				oncomplete('success', scores);
+			} else {
+				oncomplete('failure');
+			}
 		}
 	}
 

@@ -7,7 +7,7 @@
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import type { ControlZoneConfig, Transform } from './types';
 
-	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
 	// Player state: only x, y
 	const playerState = $state({
@@ -19,6 +19,9 @@
 	const transformStates = $state<Transform[]>(
 		config.transforms.map(t => ({ ...t }))
 	);
+	
+	// Track number of button clicks
+	let clickCount = $state(0);
 
 	// Calculate player position without clamping (for collision detection)
 	function calculatePlayerPos(transforms: Transform[]): { x: number; y: number } {
@@ -92,7 +95,8 @@
 	$effect(() => {
 		if (isInTarget && !completionCalled && oncomplete) {
 			completionCalled = true;
-			oncomplete('success');
+			const scores: Record<string, number> = { clicks: clickCount };
+			oncomplete('success', scores);
 		}
 	});
 
@@ -138,6 +142,9 @@
 		// Save entire state
 		const savedPlayerState = { x: playerState.x, y: playerState.y };
 		const savedTransformStates = transformStates.map(t => ({ ...t }));
+
+		// Increment click count
+		clickCount++;
 
 		// Calculate new value
 		let newValue = currentValue + button.increment;
@@ -197,8 +204,9 @@
 			const original = config.transforms[i];
 			Object.assign(transform, { ...original });
 		});
-		// Reset completion flag when player resets
+		// Reset completion flag and click count when player resets
 		completionCalled = false;
+		clickCount = 0;
 	}
 </script>
 

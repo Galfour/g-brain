@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageProps } from './$types';
 	import { root, findNodeByPath, getAllLevels, type LevelNode } from '$lib/levels';
-	import { isLevelValidated } from '$lib/player-data';
+	import { isLevelValidated, getBestScore } from '$lib/player-data';
 	import Card from '$lib/component/Card.svelte';
 	import Column from '$lib/component/Column.svelte';
 	import Row from '$lib/component/Row.svelte';
@@ -98,6 +98,7 @@
 					</Card>
 				{:else}
 					{@const validated = isLevelValidated(child.id)}
+					{@const bestScore = getBestScore(child.id)}
 					<Card>
 						<Column gap="var(--space-3)">
 							<Row gap="var(--space-2)" style="align-items: center;">
@@ -124,6 +125,11 @@
 								{/if}
 							</Row>
 							<div class="subtitle">{child.description}</div>
+							{#if bestScore}
+								<div style="font-size: 14px; color: var(--color-muted);">
+									Best score: {bestScore.score}
+								</div>
+							{/if}
 							<Row>
 								<a class="btn btn--primary" href={`/level/play?level=${child.id}`}>Play</a>
 							</Row>

@@ -15,6 +15,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Figure out how the levers control the outputs',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b || c, d || e || f];
@@ -32,6 +36,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Explore the relationships between levers and outputs',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b, c || d, e || f];
@@ -49,6 +57,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Discover what makes the outputs activate',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a && b, c && d, e && f];
@@ -67,6 +79,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Some levers may not affect the outputs at all',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f] = inputs;
 				return [a || b || c, d && e && f];
@@ -84,6 +100,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Experiment with different lever combinations',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
 				return [a || b || c, d || e || f, g || h];
@@ -101,6 +121,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Watch how lever states change the outputs',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h] = inputs;
 				return [a || b, c || d, e || f, g || h];
@@ -118,6 +142,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Patterns are becoming more complex',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i] = inputs;
 				return [a || b || c || d, e || f, g || h || i];
@@ -135,6 +163,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'The logic may vary between different outputs',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j] = inputs;
 				return [a || b, c && d && e, f || g, h && i && j];
@@ -152,6 +184,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Not all levers are connected - find which ones matter',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
 				return [
@@ -174,6 +210,10 @@ export function getLevelConfig(levelId: string): BooleanGatesConfig | null {
 			subtitle: 'Master the most challenging configuration',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'toggles',
+				maximize: false
+			},
 			booleanFunction: (inputs) => {
 				const [a, b, c, d, e, f, g, h, i, j, k, l] = inputs;
 				return [

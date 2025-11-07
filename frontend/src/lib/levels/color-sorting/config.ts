@@ -246,7 +246,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 1: Sort by Redness',
 			subtitle: 'Arrange colors from least red to most red (5 colors)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-2': {
 			numColors: 5,
@@ -255,7 +259,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 2: Sort by Greenness',
 			subtitle: 'Arrange colors from least green to most green (5 colors)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-3': {
 			numColors: 5,
@@ -264,7 +272,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 3: Sort by Blueness',
 			subtitle: 'Arrange colors from least blue to most blue (5 colors)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-4': {
 			numColors: 10,
@@ -273,7 +285,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 4: More Redness',
 			subtitle: 'Sort 10 colors by redness',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-5': {
 			numColors: 10,
@@ -282,7 +298,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 5: More Greenness',
 			subtitle: 'Sort 10 colors by greenness',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-6': {
 			numColors: 5,
@@ -292,6 +312,10 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			subtitle: 'Arrange colors in hue order (circular - any starting point works)',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			},
 			wordExplanations: {
 				hue: 'Hue is the type of color - like red, blue, yellow, green. It\'s what makes a color "red" rather than "blue".'
 			}
@@ -303,7 +327,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 7: More Hues',
 			subtitle: 'Sort 10 colors by hue (circular order)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-8': {
 			numColors: 5,
@@ -313,6 +341,10 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			subtitle: 'Arrange colors from least saturated to most saturated',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			},
 			wordExplanations: {
 				saturation: 'Saturation is how intense or vivid a color is. A highly saturated red is bright and vibrant, while a low saturation red looks grayish or washed out.',
 				saturated: 'Saturation is how intense or vivid a color is. A highly saturated red is bright and vibrant, while a low saturation red looks grayish or washed out.'
@@ -326,6 +358,10 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			subtitle: 'Arrange colors from darkest to brightest',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			},
 			wordExplanations: {
 				brightness: 'Brightness is how light or dark a color is. A bright color is light and closer to white, while a dark color is closer to black.'
 			}
@@ -337,7 +373,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 10: More Saturation',
 			subtitle: 'Sort 10 colors by saturation',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-11': {
 			numColors: 10,
@@ -346,7 +386,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 11: More Brightness',
 			subtitle: 'Sort 10 colors by brightness',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-12': {
 			numColors: 20,
@@ -355,7 +399,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 12: Challenge Redness',
 			subtitle: 'Sort 20 colors by redness (colors vary in other properties too)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-13': {
 			numColors: 20,
@@ -364,7 +412,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 13: Challenge Hue',
 			subtitle: 'Sort 20 colors by hue (colors vary in brightness, saturation fixed)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-14': {
 			numColors: 50,
@@ -373,7 +425,11 @@ export function getLevelConfig(levelId: string): ColorSortingConfig | null {
 			title: 'Color Sorting 14: Ultimate Challenge',
 			subtitle: 'Sort 50 colors by brightness (colors vary in saturation, hue fixed)',
 			source: 'procgen',
-			requiredCompletions: 5
+			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'swaps',
+				maximize: false
+			}
 		},
 		'color-sorting-15': {
 			numColors: 50,

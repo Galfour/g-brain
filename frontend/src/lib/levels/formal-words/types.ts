@@ -8,6 +8,10 @@ export type FormalWordsConfig = {
 	source: 'procgen' | 'fixed'; // Whether level uses procedural generation or is fixed
 	requiredCompletions: number; // Number of consecutive successes required to validate the level
 	wordExplanations?: Record<string, string>; // Simple explanations for new words introduced in this level
+	scoreConfig?: {
+		primaryScore: string; // Name of the primary score metric (e.g., 'attempts')
+		maximize: boolean; // Whether to maximize (true) or minimize (false) the score
+	};
 	// For level generation
 	generateQuestion: () => {
 		prompt: string;

@@ -9,7 +9,7 @@
 	import type { ColorSortingConfig, RGB } from './types';
 	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
 
-	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure') => void; children?: any } = $props();
+	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
 	// Determine if this is an easy level (numColors <= 10)
 	const isEasyLevel = config.numColors <= 10;
@@ -34,12 +34,16 @@
 
 	// Track if completion has been called to avoid multiple calls
 	let completionCalled = $state(false);
+	
+	// Track number of swaps
+	let swapCount = $state(0);
 
 	function swap(index: number) {
 		if (index >= userOrder.length - 1) return;
 		const temp = userOrder[index];
 		userOrder[index] = userOrder[index + 1];
 		userOrder[index + 1] = temp;
+		swapCount++;
 		// Reset completion flag when player makes a change
 		completionCalled = false;
 	}
@@ -48,7 +52,8 @@
 	$effect(() => {
 		if (isCorrect && !completionCalled && oncomplete) {
 			completionCalled = true;
-			oncomplete('success');
+			const scores: Record<string, number> = { swaps: swapCount };
+			oncomplete('success', scores);
 		}
 	});
 

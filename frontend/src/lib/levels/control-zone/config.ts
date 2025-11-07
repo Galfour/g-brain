@@ -32,6 +32,10 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			subtitle: 'Use the buttons to move the player to the target zone',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'clicks',
+				maximize: false
+			},
 			targetZone: {
 				x: 300,
 				y: 150, // Up from start position
@@ -73,6 +77,10 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			subtitle: 'Navigate using two button pairs',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'clicks',
+				maximize: false
+			},
 			targetZone: {
 				x: 450,
 				y: 150,
@@ -134,6 +142,10 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			subtitle: 'Find the diagonal translation pattern',
 			source: 'procgen',
 			requiredCompletions: 5,
+			scoreConfig: {
+				primaryScore: 'clicks',
+				maximize: false
+			},
 			targetZone: {
 				x: 450,
 				y: 450,
@@ -195,6 +207,10 @@ export function getLevelConfig(levelId: string): ControlZoneConfig | null {
 			subtitle: 'Combine translation with rotation around the center',
 			source: 'fixed',
 			requiredCompletions: 2,
+			scoreConfig: {
+				primaryScore: 'clicks',
+				maximize: false
+			},
 			targetZone: {
 				x: 450,
 				y: 150,

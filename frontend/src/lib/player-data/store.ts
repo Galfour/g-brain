@@ -1,5 +1,9 @@
-import type { PlayerData, LevelStart, LevelCompletion, LevelCompletionStatus } from './types';
+import type { PlayerData, LevelStart, LevelCompletion, LevelCompletionStatus, BestScore } from './types';
 import { levels } from '$lib/levels';
+import { getLevelConfig } from '$lib/levels/boolean-gates/config';
+import { getLevelConfig as getColorSortingConfig } from '$lib/levels/color-sorting/config';
+import { getLevelConfig as getControlZoneConfig } from '$lib/levels/control-zone/config';
+import { getLevelConfig as getFormalWordsConfig } from '$lib/levels/formal-words/config';
 
 const CURRENT_PLAYER_KEY = 'g-brain-current-player';
 const PLAYER_DATA_PREFIX = 'g-brain-player-data-';
@@ -12,7 +16,8 @@ function getDefaultPlayerData(playerName: string): PlayerData {
 	return {
 		userName: playerName,
 		levelStarts: [],
-		levelCompletions: []
+		levelCompletions: [],
+		bestScores: []
 	};
 }
 
@@ -26,7 +31,12 @@ function loadPlayerData(playerName: string): PlayerData {
 		if (!stored) {
 			return getDefaultPlayerData(playerName);
 		}
-		return JSON.parse(stored);
+		const data = JSON.parse(stored);
+		// Ensure bestScores exists for backward compatibility
+		if (!data.bestScores) {
+			data.bestScores = [];
+		}
+		return data;
 	} catch (error) {
 		console.error('Failed to load player data:', error);
 		return getDefaultPlayerData(playerName);
@@ -69,7 +79,7 @@ export function getCurrentPlayer(): string {
 export function getPlayerData(playerName?: string): PlayerData {
 	const name = playerName || getCurrentPlayerName();
 	if (!name) {
-		return { userName: '', levelStarts: [], levelCompletions: [] };
+		return { userName: '', levelStarts: [], levelCompletions: [], bestScores: [] };
 	}
 	
 	if (playerDataCache && playerDataCache.name === name) {
@@ -212,7 +222,25 @@ export function trackLevelStart(levelId: string, playerName?: string): void {
 	}
 }
 
-export function trackLevelCompletion(levelId: string, status: LevelCompletionStatus, playerName?: string): void {
+function getLevelScoreConfig(levelId: string): { primaryScore: string; maximize: boolean } | null {
+	// Try to get score config from level configs
+	if (levelId.startsWith('boolean-gates-')) {
+		const config = getLevelConfig(levelId);
+		return config?.scoreConfig || null;
+	} else if (levelId.startsWith('color-sorting-')) {
+		const config = getColorSortingConfig(levelId);
+		return config?.scoreConfig || null;
+	} else if (levelId.startsWith('control-zone-')) {
+		const config = getControlZoneConfig(levelId);
+		return config?.scoreConfig || null;
+	} else if (levelId.startsWith('formal-words-')) {
+		const config = getFormalWordsConfig(levelId);
+		return config?.scoreConfig || null;
+	}
+	return null;
+}
+
+export function trackLevelCompletion(levelId: string, status: LevelCompletionStatus, scores?: Record<string, number>, playerName?: string): void {
 	const name = playerName || getCurrentPlayerName();
 	if (!name) return;
 	
@@ -234,12 +262,54 @@ export function trackLevelCompletion(levelId: string, status: LevelCompletionSta
 	
 	const timeSpent = start ? completionTime - start.startTime : 0;
 	
-	data.levelCompletions.push({
+	const completion: LevelCompletion = {
 		levelId,
 		status,
 		completionTime,
 		timeSpent
-	});
+	};
+	
+	if (scores) {
+		completion.scores = scores;
+	}
+	
+	data.levelCompletions.push(completion);
+	
+	// Update best score if this is a successful completion with scores
+	if (status === 'success' && scores) {
+		const scoreConfig = getLevelScoreConfig(levelId);
+		if (scoreConfig && scores[scoreConfig.primaryScore] !== undefined) {
+			const primaryScoreValue = scores[scoreConfig.primaryScore];
+			const existingBest = data.bestScores.find(bs => bs.levelId === levelId);
+			
+			let shouldUpdate = false;
+			if (!existingBest) {
+				shouldUpdate = true;
+			} else {
+				// A "good score" is the lowest (for max score) or highest (for min score) score reached
+				// For maximize: good score is highest, so we want to update if new score > best
+				// For minimize: good score is lowest, so we want to update if new score < best
+				if (scoreConfig.maximize) {
+					shouldUpdate = primaryScoreValue > existingBest.score;
+				} else {
+					shouldUpdate = primaryScoreValue < existingBest.score;
+				}
+			}
+			
+			if (shouldUpdate) {
+				if (existingBest) {
+					existingBest.score = primaryScoreValue;
+					existingBest.achievedAt = completionTime;
+				} else {
+					data.bestScores.push({
+						levelId,
+						score: primaryScoreValue,
+						achievedAt: completionTime
+					});
+				}
+			}
+		}
+	}
 	
 	if (playerDataCache && playerDataCache.name === name) {
 		playerDataCache.data = data;
@@ -337,5 +407,17 @@ export function getRequiredCompletionsForLevel(levelId: string): number {
 export function isLevelValidated(levelId: string, playerName?: string): boolean {
 	const requiredCompletions = getRequiredCompletions(levelId);
 	return getValidationProgress(levelId, playerName) >= requiredCompletions;
+}
+
+/**
+ * Get the best score for a level.
+ */
+export function getBestScore(levelId: string, playerName?: string): BestScore | null {
+	const name = playerName || getCurrentPlayerName();
+	if (!name) return null;
+	
+	const data = getPlayerData(name);
+	const best = data.bestScores.find(bs => bs.levelId === levelId);
+	return best || null;
 }
 

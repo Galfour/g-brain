@@ -332,6 +332,11 @@
 													<div style="font-size: 12px; color: var(--color-muted);">
 														({formatDuration(completion.timeSpent)})
 													</div>
+													{#if completion.scores && Object.keys(completion.scores).length > 0}
+														<div style="font-size: 12px; color: var(--color-muted);">
+															{Object.entries(completion.scores).map(([key, value]) => `${key}: ${value}`).join(', ')}
+														</div>
+													{/if}
 												</Row>
 											{/each}
 										</Column>

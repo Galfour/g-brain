@@ -5,6 +5,7 @@
 - [X] refactor play/svelte
 - [X] lessons before each exercise with new concept
 - [X] level tree (with validation)
+- [] level scores
 - [] internationalisation
 - [] integration with rememboo or anki
 

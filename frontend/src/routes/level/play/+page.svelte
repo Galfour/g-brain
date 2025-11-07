@@ -120,10 +120,10 @@
 		}
 	});
 
-	function handleComplete(status: 'success' | 'failure') {
+	function handleComplete(status: 'success' | 'failure', scores?: Record<string, number>) {
 		if (!currentLevelId) return;
 		
-		trackLevelCompletion(currentLevelId, status);
+		trackLevelCompletion(currentLevelId, status, scores);
 		validationProgress = getValidationProgress(currentLevelId);
 		completionStatus = status;
 		completionModalOpen = true;
