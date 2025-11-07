@@ -4,7 +4,7 @@
 - [X] separate regeneratable from one-off levels
 - [X] refactor play/svelte
 - [X] lessons before each exercise with new concept
-- [] level tree (with validation)
+- [X] level tree (with validation)
 - [] internationalisation
 - [] integration with rememboo or anki
 

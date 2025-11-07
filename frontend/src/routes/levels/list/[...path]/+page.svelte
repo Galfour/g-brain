@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import type { PageProps } from './$types';
 	import { root, findNodeByPath, getAllLevels, type LevelNode } from '$lib/levels';
 	import { isLevelValidated } from '$lib/player-data';
 	import Card from '$lib/component/Card.svelte';
@@ -9,10 +9,11 @@
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import ToolTip from '$lib/component/ToolTip.svelte';
 
-	const pathParam = $page.params.path || '';
-	const pathSegments = pathParam.split('/').filter(Boolean);
+	let pageProps: PageProps = $props();
+	let pathParam = $derived(pageProps.params.path || '');
+	let pathSegments = $derived(pathParam.split('/').filter(Boolean));
 	
-	const currentNode = $derived(findNodeByPath(root, pathSegments));
+	let currentNode = $derived(findNodeByPath(root, pathSegments));
 	
 	function getLevelCount(node: LevelNode): number {
 		if (node.type === 'level') {
@@ -25,7 +26,7 @@
 		return `/levels/list/${segments.join('/')}`;
 	}
 	
-	const breadcrumbs = $derived.by(() => {
+	let breadcrumbs = $derived.by(() => {
 		const crumbs: Array<{ title: string; url: string }> = [
 			{ title: 'Root', url: '/levels/list' }
 		];

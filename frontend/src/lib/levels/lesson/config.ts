@@ -47,3 +47,4 @@ export function getLessonConfig(lessonId: string): LessonConfig | null {
 	return lessons[lessonId] || null;
 }
 
+
