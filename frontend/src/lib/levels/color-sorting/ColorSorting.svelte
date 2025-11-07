@@ -8,6 +8,7 @@
 	import TextWithTooltips from '$lib/component/TextWithTooltips.svelte';
 	import type { ColorSortingConfig, RGB } from './types';
 	import { sortColorsByProperty, isSorted, rgbToCss } from './types';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let { config, oncomplete, children }: { config: ColorSortingConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
@@ -85,7 +86,7 @@
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Example{numExamples > 1 ? 's' : ''} (Correct Order)</div>
+				<div class="subtitle">{numExamples > 1 ? m.color_sorting_examples() : m.color_sorting_example()} (Correct Order)</div>
 				<Column gap="var(--space-3)">
 					{#each exampleOrders as exampleOrder}
 						<Row gap="var(--space-2)" style="flex-wrap: wrap;">
@@ -102,7 +103,7 @@
 
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Your Order {#if isCorrect}<span style="color: var(--color-primary);">✓ Correct!</span>{/if}</div>
+				<div class="subtitle">{m.color_sorting_your_order()} {#if isCorrect}<span style="color: var(--color-primary);">{m.color_sorting_correct()}</span>{/if}</div>
 				<div style="display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-1);">
 					{#each items as item (item.content)}
 						<div
@@ -116,7 +117,7 @@
 								<button
 									class="btn btn--ghost"
 									onclick={() => swap(item.content)}
-									aria-label="Swap colors"
+									aria-label={m.color_sorting_swap_aria()}
 									style="padding: var(--space-1); min-width: 32px; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;"
 								>
 									<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -128,7 +129,7 @@
 					{/each}
 				</div>
 				<div style="font-size: 12px; color: var(--color-muted);">
-					Click the swap icons to reorder colors
+					{m.color_sorting_swap_hint()}
 				</div>
 			</Column>
 		</Card>

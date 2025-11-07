@@ -6,6 +6,7 @@
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import type { BooleanGatesConfig } from './types';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let { config, oncomplete, children }: { config: BooleanGatesConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
@@ -66,7 +67,7 @@
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Levers</div>
+				<div class="subtitle">{m.boolean_gates_levers()}</div>
 				<Row gap="var(--space-3)">
 					{#each allLevers as on, i}
 						{@const leverColor = getLeverColor(i)}
@@ -80,22 +81,21 @@
 								disabled={!on && !canToggleOn}
 							>
 								<span style={on && leverColor ? 'color: #0b0f14; font-weight: 600;' : ''}>
-									{on ? `Lever ${i+1}: ON` : `Lever ${i+1}: OFF`}
+									{on ? m.boolean_gates_lever_on({ index: i + 1 }) : m.boolean_gates_lever_off({ index: i + 1 })}
 								</span>
 							</Button>
 						</div>
 					{/each}
 				</Row>
 				<div class="subtitle" style="font-size: 12px; color: var(--color-muted);">
-					Maximum {config.maxActiveLevers} lever{config.maxActiveLevers > 1 ? 's' : ''} can be ON at once
-					({activeCount}/{config.maxActiveLevers} currently ON)
+					{config.maxActiveLevers > 1 ? m.boolean_gates_max_levers_plural({ maxActiveLevers: config.maxActiveLevers }) : m.boolean_gates_max_levers({ maxActiveLevers: config.maxActiveLevers })} {m.boolean_gates_currently_on({ activeCount, maxActiveLevers: config.maxActiveLevers })}
 				</div>
 			</Column>
 		</Card>
 
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Outputs</div>
+				<div class="subtitle">{m.boolean_gates_outputs()}</div>
 				<Row gap="var(--space-3)">
 					{#each outputs as open, i}
 						{@const outputColor = config.outputColors[i]}
@@ -103,12 +103,12 @@
 							class="card" 
 							style={`padding: var(--space-4); border: 2px solid ${outputColor || 'var(--color-border)'}; ${open && outputColor ? `background: color-mix(in oklab, ${outputColor}, transparent 85%);` : ''}`}
 						>
-							Output {i+1}: {open ? 'TRUE' : 'FALSE'}
+							{m.boolean_gates_output({ index: i + 1, value: open ? m.boolean_gates_true() : m.boolean_gates_false() })}
 						</div>
 					{/each}
 				</Row>
 				{#if outputs.every(Boolean)}
-					<div style="color: var(--color-primary); font-weight: 700;">All outputs TRUE! ✔</div>
+					<div style="color: var(--color-primary); font-weight: 700;">{m.boolean_gates_all_true()}</div>
 				{/if}
 			</Column>
 		</Card>

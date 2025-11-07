@@ -6,6 +6,7 @@
 	import Title from '$lib/component/Title.svelte';
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import type { ControlZoneConfig, Transform } from './types';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let { config, oncomplete, children }: { config: ControlZoneConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
@@ -219,7 +220,7 @@
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Controls</div>
+				<div class="subtitle">{m.control_zone_controls()}</div>
 				<Column gap="var(--space-3)">
 					{#each config.buttons as btn}
 						<Button onclick={() => handleButtonClick(btn.id)}>
@@ -229,12 +230,12 @@
 				</Column>
 				<div style="margin-top: var(--space-2);">
 					<Button onclick={reset} variant="ghost">
-						Reset
+						{m.control_zone_reset()}
 					</Button>
 				</div>
 				{#if isInTarget}
 					<div style="color: var(--color-primary); font-weight: 700; margin-top: var(--space-2);">
-						Target reached! ✔
+						{m.control_zone_target_reached()}
 					</div>
 				{/if}
 			</Column>
@@ -242,7 +243,7 @@
 
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Display Zone</div>
+				<div class="subtitle">{m.control_zone_display_zone()}</div>
 				<div
 					style="position: relative; width: 600px; height: 600px; background: var(--color-bg); border: 2px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden;"
 				>

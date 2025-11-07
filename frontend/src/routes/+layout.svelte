@@ -2,6 +2,7 @@
 	import favicon from '$lib/assets/favicon.svg';
 	import '../app.css';
 	import LocaleSelector from '$lib/component/LocaleSelector.svelte';
+	import { m } from '$lib/paraglide/messages.js';
 	let { children } = $props();
 </script>
 
@@ -13,9 +14,9 @@
 	<div class="container nav__inner">
 		<div class="brand">g-brain</div>
 		<div class="nav__links">
-			<a href="/">Home</a>
-			<a href="/levels/list">Levels</a>
-			<a href="/stats">Stats</a>
+			<a href="/">{m.nav_home()}</a>
+			<a href="/levels/list">{m.nav_levels()}</a>
+			<a href="/stats">{m.nav_stats()}</a>
 			<LocaleSelector />
 		</div>
 	</div>

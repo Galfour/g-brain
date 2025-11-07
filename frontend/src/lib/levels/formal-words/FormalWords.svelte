@@ -10,6 +10,7 @@
 	import Button from '$lib/component/Button.svelte';
 	import TextWithTooltips from '$lib/component/TextWithTooltips.svelte';
 	import type { FormalWordsConfig } from './types';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let { config, oncomplete, children }: { config: FormalWordsConfig; oncomplete?: (status: 'success' | 'failure', scores?: Record<string, number>) => void; children?: any } = $props();
 
@@ -93,7 +94,7 @@
 	<Row gap="var(--space-6)">
 		<Card>
 			<Column gap="var(--space-4)">
-				<div class="subtitle">Example</div>
+				<div class="subtitle">{m.formal_words_example()}</div>
 				<div style="font-size: 14px; color: var(--color-muted);">
 					<TextWithTooltips text={question.example} wordExplanations={config.wordExplanations} />
 				</div>
@@ -109,7 +110,7 @@
 				{#if config.answerType === 'text'}
 					<TextInput
 						bind:value={userAnswer}
-						placeholder="Type your answer"
+						placeholder={m.formal_words_type_answer()}
 						onenter={submitAnswer}
 						oninput={handleAnswerChange}
 					/>
@@ -129,14 +130,14 @@
 				{/if}
 
 				<Button onclick={submitAnswer} disabled={!canSubmit()}>
-					Submit
+					{m.formal_words_submit()}
 				</Button>
 
 				{#if submitted}
 					{#if submissionResult === 'correct'}
-						<div style="color: var(--color-primary); font-weight: 600;">✓ Correct!</div>
+						<div style="color: var(--color-primary); font-weight: 600;">{m.formal_words_correct()}</div>
 					{:else if submissionResult === 'incorrect'}
-						<div style="color: var(--color-error, #ff4444); font-weight: 600;">✗ Incorrect. Try again!</div>
+						<div style="color: var(--color-error, #ff4444); font-weight: 600;">{m.formal_words_incorrect()}</div>
 					{/if}
 				{/if}
 			</Column>

@@ -7,6 +7,7 @@
 	import Subtitle from '$lib/component/Subtitle.svelte';
 	import Modal from '$lib/component/Modal.svelte';
 	import Button from '$lib/component/Button.svelte';
+	import { m } from '$lib/paraglide/messages.js';
 	import BooleanGates from '$lib/levels/boolean-gates/BooleanGates.svelte';
 	import { getLevelConfig as getBooleanGatesConfig } from '$lib/levels/boolean-gates/config';
 	import type { BooleanGatesConfig } from '$lib/levels/boolean-gates/types';
@@ -158,11 +159,11 @@
 
 	const modalTitle = $derived(
 		validationProgress >= requiredCompletions && completionStatus === 'success'
-			? 'Level Validated!'
+			? m.level_validated()
 			: completionStatus === 'success'
-				? 'Level Complete!'
+				? m.level_complete()
 				: completionStatus === 'failure'
-					? 'Level Failed'
+					? m.level_failed()
 					: ''
 	);
 
@@ -193,8 +194,8 @@
 		{/key}
 	{:else}
 		<Column gap="var(--space-3)">
-			<Title>No level selected</Title>
-			<Subtitle>Choose one from the <a href="/levels/list">levels list</a>.</Subtitle>
+			<Title>{m.level_no_selected()}</Title>
+			<Subtitle>{@html m.level_choose_from_list()}</Subtitle>
 		</Column>
 	{/if}
 </Column>
@@ -203,26 +204,26 @@
 	<Column gap="var(--space-4)">
 		{#if completionStatus === 'success'}
 			{#if isLevelValidated}
-				<Subtitle>Level Validated! You've completed this level {requiredCompletions} times in a row.</Subtitle>
+				<Subtitle>{m.level_validated_message({ requiredCompletions })}</Subtitle>
 			{:else}
-				<Subtitle>Congratulations! You completed this level.</Subtitle>
+				<Subtitle>{m.level_congratulations()}</Subtitle>
 			{/if}
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-primary);">
 				{validationProgress}/{requiredCompletions}
 			</div>
 		{:else if completionStatus === 'failure'}
-			<Subtitle>Don't give up! Try again to master this level.</Subtitle>
+			<Subtitle>{m.level_dont_give_up()}</Subtitle>
 			<div style="text-align: center; font-size: 18px; font-weight: 600; color: var(--color-muted);">
 				0/{requiredCompletions}
 			</div>
 		{/if}
 		<Row gap="var(--space-3)" style="justify-content: center;">
 			{#if showRetryButton}
-				<Button onclick={handleRetry}>Retry</Button>
+				<Button onclick={handleRetry}>{m.level_retry()}</Button>
 			{:else if isLevelValidated}
-				<Button onclick={handleNext}>Next</Button>
+				<Button onclick={handleNext}>{m.level_next()}</Button>
 			{/if}
-			<Button onclick={closeModal} variant="ghost">Go to levels list</Button>
+			<Button onclick={closeModal} variant="ghost">{m.level_go_to_list()}</Button>
 		</Row>
 	</Column>
 </Modal>

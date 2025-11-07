@@ -14,6 +14,7 @@
 		clearPlayerData
 	} from '$lib/player-data';
 	import type { LevelStart, LevelCompletion, PlayerData } from '$lib/player-data';
+	import { m } from '$lib/paraglide/messages.js';
 
 	let currentPlayerName = $state('');
 	let allPlayers = $state<string[]>([]);
@@ -91,7 +92,7 @@
 
 		// Check if name already exists
 		if (allPlayers.includes(newName)) {
-			alert('A player with this name already exists!');
+			alert(m.stats_name_exists());
 			return;
 		}
 
@@ -169,7 +170,7 @@
 	});
 
 	function clearData() {
-		if (confirm('Are you sure you want to clear all player data for this player? This cannot be undone.')) {
+		if (confirm(m.stats_clear_confirm())) {
 			clearPlayerData(currentPlayerName);
 			const data = getPlayerData(currentPlayerName);
 			playerData.userName = data.userName;
@@ -182,14 +183,14 @@
 
 <Column gap="var(--space-6)">
 	<Column gap="var(--space-2)">
-		<Title>Player Stats</Title>
-		<Subtitle>Track your progress and performance</Subtitle>
+		<Title>{m.stats_title()}</Title>
+		<Subtitle>{m.stats_subtitle()}</Subtitle>
 	</Column>
 
 	<!-- Player Picker -->
 	<Card>
 		<Column gap="var(--space-4)">
-			<div class="subtitle">Select Player</div>
+			<div class="subtitle">{m.stats_select_player()}</div>
 			<select
 				value={currentPlayerName}
 				onchange={(e) => handlePlayerChange((e.target as HTMLSelectElement).value)}
@@ -198,7 +199,7 @@
 				{#each allPlayers as player}
 					<option value={player}>{player}</option>
 				{/each}
-				<option value="__new__">+ New Player</option>
+				<option value="__new__">{m.stats_new_player()}</option>
 			</select>
 		</Column>
 	</Card>
@@ -206,7 +207,7 @@
 	<!-- User Name Section -->
 	<Card>
 		<Column gap="var(--space-4)">
-			<div class="subtitle">User Name</div>
+			<div class="subtitle">{m.stats_user_name()}</div>
 			{#if editingName}
 				<Row gap="var(--space-3)" style="align-items: center;">
 					<input
@@ -218,15 +219,15 @@
 							if (e.key === 'Escape') cancelEditName();
 						}}
 					/>
-					<button class="btn btn--primary" onclick={saveName}>Save</button>
-					<button class="btn btn--ghost" onclick={cancelEditName}>Cancel</button>
+					<button class="btn btn--primary" onclick={saveName}>{m.stats_save()}</button>
+					<button class="btn btn--ghost" onclick={cancelEditName}>{m.stats_cancel()}</button>
 				</Row>
 			{:else}
 				<Row gap="var(--space-3)" style="align-items: center;">
 					<div style="font-size: 18px; font-weight: 600;">
-						{playerData.userName || '(No name set)'}
+						{playerData.userName || m.stats_no_name()}
 					</div>
-					<button class="btn btn--ghost" onclick={() => editingName = true}>Edit</button>
+					<button class="btn btn--ghost" onclick={() => editingName = true}>{m.stats_edit()}</button>
 				</Row>
 			{/if}
 		</Column>
@@ -235,50 +236,50 @@
 	<!-- Summary Stats -->
 	<Card>
 		<Column gap="var(--space-4)">
-			<div class="subtitle">Summary</div>
+			<div class="subtitle">{m.stats_summary()}</div>
 			<div class="grid grid--3">
 				<div>
 					<div style="font-size: 32px; font-weight: 700; color: var(--color-primary);">
 						{summary.uniqueLevelsStarted}
 					</div>
-					<div style="color: var(--color-muted); font-size: 14px;">Levels Started</div>
+					<div style="color: var(--color-muted); font-size: 14px;">{m.stats_levels_started()}</div>
 				</div>
 				<div>
 					<div style="font-size: 32px; font-weight: 700; color: var(--color-primary);">
 						{summary.totalCompletions}
 					</div>
-					<div style="color: var(--color-muted); font-size: 14px;">Total Completions</div>
+					<div style="color: var(--color-muted); font-size: 14px;">{m.stats_total_completions()}</div>
 				</div>
 				<div>
 					<div style="font-size: 32px; font-weight: 700; color: var(--color-primary);">
 						{summary.successRate.toFixed(1)}%
 					</div>
-					<div style="color: var(--color-muted); font-size: 14px;">Success Rate</div>
+					<div style="color: var(--color-muted); font-size: 14px;">{m.stats_success_rate()}</div>
 				</div>
 			</div>
 			<div style="margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border);">
 				<Row gap="var(--space-6)" style="flex-wrap: wrap;">
 					<div>
 						<div style="font-size: 18px; font-weight: 600;">
-							{summary.successfulCompletions} success{summary.successfulCompletions !== 1 ? 'es' : ''}
+							{summary.successfulCompletions} {summary.successfulCompletions !== 1 ? m.stats_successes() : m.stats_success()}
 						</div>
 					</div>
 					<div>
 						<div style="font-size: 18px; font-weight: 600;">
-							{summary.failedCompletions} failure{summary.failedCompletions !== 1 ? 's' : ''}
+							{summary.failedCompletions} {summary.failedCompletions !== 1 ? m.stats_failures() : m.stats_failure()}
 						</div>
 					</div>
 					<div>
 						<div style="font-size: 18px; font-weight: 600;">
 							{formatDuration(summary.totalTimeSpent)}
 						</div>
-						<div style="color: var(--color-muted); font-size: 14px;">Total Time</div>
+						<div style="color: var(--color-muted); font-size: 14px;">{m.stats_total_time()}</div>
 					</div>
 					<div>
 						<div style="font-size: 18px; font-weight: 600;">
 							{formatDuration(summary.avgTimePerCompletion)}
 						</div>
-						<div style="color: var(--color-muted); font-size: 14px;">Avg Time</div>
+						<div style="color: var(--color-muted); font-size: 14px;">{m.stats_avg_time()}</div>
 					</div>
 				</Row>
 			</div>
@@ -288,10 +289,10 @@
 	<!-- Level Details -->
 	<Card>
 		<Column gap="var(--space-4)">
-			<div class="subtitle">Level Details</div>
+			<div class="subtitle">{m.stats_level_details()}</div>
 			{#if levelDataMap.size === 0}
 				<div style="color: var(--color-muted); padding: var(--space-4); text-align: center;">
-					No level data yet. Start playing levels to see your stats here!
+					{m.stats_no_data()}
 				</div>
 			{:else}
 				<Column gap="var(--space-4)">
@@ -303,7 +304,7 @@
 								{#if data.starts.length > 0}
 									<div>
 										<div style="font-size: 14px; color: var(--color-muted); margin-bottom: var(--space-2);">
-											Started {data.starts.length} time{data.starts.length !== 1 ? 's' : ''}
+											{data.starts.length === 1 ? m.stats_started_times({ count: data.starts.length }) : m.stats_started_times_plural({ count: data.starts.length })}
 										</div>
 										<Column gap="var(--space-1)">
 											{#each data.starts.sort((a, b) => b.startTime - a.startTime) as start}
@@ -318,13 +319,13 @@
 								{#if data.completions.length > 0}
 									<div>
 										<div style="font-size: 14px; color: var(--color-muted); margin-bottom: var(--space-2); margin-top: var(--space-2);">
-											Completed {data.completions.length} time{data.completions.length !== 1 ? 's' : ''}
+											{data.completions.length === 1 ? m.stats_completed_times({ count: data.completions.length }) : m.stats_completed_times_plural({ count: data.completions.length })}
 										</div>
 										<Column gap="var(--space-2)">
 											{#each data.completions.sort((a, b) => b.completionTime - a.completionTime) as completion}
 												<Row gap="var(--space-3)" style="align-items: center;">
 													<div style="font-size: 12px; padding: var(--space-1) var(--space-2); background: {completion.status === 'success' ? 'color-mix(in oklab, var(--color-primary), transparent 80%)' : 'color-mix(in oklab, #ff6a6a, transparent 80%)'}; border-radius: var(--radius-sm); font-weight: 600;">
-														{completion.status === 'success' ? '✓ Success' : '✗ Failure'}
+														{completion.status === 'success' ? m.stats_success_badge() : m.stats_failure_badge()}
 													</div>
 													<div style="font-size: 12px; color: var(--color-muted);">
 														{formatTime(completion.completionTime)}
@@ -353,9 +354,9 @@
 	<!-- Clear Data Button -->
 	<Card>
 		<Column gap="var(--space-4)">
-			<div class="subtitle">Danger Zone</div>
+			<div class="subtitle">{m.stats_danger_zone()}</div>
 			<button class="btn btn--ghost" onclick={clearData} style="color: #ff6a6a;">
-				Clear This Player's Data
+				{m.stats_clear_data()}
 			</button>
 		</Column>
 	</Card>
